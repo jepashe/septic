@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "491226655543",
+    "project_id": "septic-b9953",
+    "storage_bucket": "septic-b9953.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491226655543:android:08acf1a1587af5006208b2",
+        "android_client_info": {
+          "package_name": "com.example.septic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491226655543-r5nam18nb9jtuivvofc4vfqihq8fcho9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiRqYmINUgaihn2_LQ0X_g2H-xJO-qpU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491226655543-r5nam18nb9jtuivvofc4vfqihq8fcho9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
