@@ -34,7 +34,7 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
         emit(LoadingAppWithoutUsersState());
       }
 
-      if (_storeRepository.chekConfirmPinUser()) {
+      if (_storeRepository.checkConfirmPinUser()) {
         emit(LoadingAppWithUsersState());
       }
 

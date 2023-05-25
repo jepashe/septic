@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:septic/entity/user.dart';
 
@@ -54,4 +52,6 @@ class SepticApi {
     }
     return true;
   }
+
+  //Future<String> getToken({})
 }

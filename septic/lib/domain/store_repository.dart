@@ -24,9 +24,17 @@ class StoreRepository {
     _usersStore.put('defaultUser', user);
   }
 
-  bool chekConfirmPinUser() {
+  bool checkConfirmPinUser() {
     final user = _usersStore.get('defaultUser');
     if (user!.confirmed == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  bool chekTokenUser() {
+    final user = _usersStore.get('defaultUser');
+    if (user!.token == null) {
       return true;
     }
     return false;
