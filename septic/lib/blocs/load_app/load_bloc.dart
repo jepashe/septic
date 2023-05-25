@@ -29,7 +29,6 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
       _storeRepository.deleteUsers();
       _storeRepository.addUser(user);
       _storeRepository.printAllUsers();
-      ghghjghjhj
 
       if (_storeRepository.checkIsEmpty()) {
         emit(LoadingAppWithoutUsersState());
