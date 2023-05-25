@@ -27,9 +27,9 @@ class StoreRepository {
   bool chekConfirmPinUser() {
     final user = _usersStore.get('defaultUser');
     if (user!.confirmed == 0) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   void deleteUsers() {

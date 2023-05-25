@@ -12,17 +12,23 @@ class User {
   final String? email;
   @HiveField(3)
   final int? confirmed;
+  @HiveField(4)
+  final String? password;
+  @HiveField(5)
+  final String? token;
 
   User({
     required this.user_id,
     required this.name,
     required this.email,
     required this.confirmed,
+    this.password,
+    this.token,
   });
 
   @override
   String toString() {
-    return "User ID: ${user_id.toString()}, User Name: ${name}, Email: ${email}, Phone Number ${confirmed}.";
+    return "User ID: ${user_id.toString()}, User Name: ${name}, Email: ${email}, Confirmed User: ${confirmed}, Password User: ${password}, Token User: ${token}.";
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
