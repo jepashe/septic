@@ -17,6 +17,11 @@ class AutenticationWaitingPinState extends AuthenticationState {
   List<Object?> get props => [];
 }
 
+class AutenticationGetTokenState extends AuthenticationState {
+  @override
+  List<Object?> get props => [];
+}
+
 class AutenticationErrorState extends AuthenticationState {
   String error;
   AutenticationErrorState({

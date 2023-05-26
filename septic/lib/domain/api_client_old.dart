@@ -7,14 +7,14 @@ class ApiClient {
 
   final _headers = {'Accept': 'application/json'};
 
-  Future<User?> signUp({required String name, required String email}) async {
+  Future<User> signUp({required String name, required String email}) async {
     final _url = Uri.parse(_baseUrl + 'users');
-    Map<String, String> body = {
+    Map<String, String> _body = {
       'name': name,
       'email': email,
     };
 
-    final response = await http.post(_url, body: body, headers: _headers);
+    final response = await http.post(_url, body: _body, headers: _headers);
 
     if (response.statusCode == 422) {
       final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
@@ -25,6 +25,25 @@ class ApiClient {
     final User user = User.fromJson(json['user']);
     return user;
   }
+
+  Future<User> confirmEmail({required int id, required String pin}) async {
+    final _url = Uri.parse(_baseUrl + 'users/$id/confirmation');
+    Map<String, String> _body = {
+      'code': pin,
+    };
+
+    final response = await http.post(_url, body: _body, headers: _headers);
+
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    final User user = User.fromJson(json['user']);
+    return user;
+  }
+
   /*
   final _baseUrl = 'https://app.xn--74-6kcaymg3bmueas.xn--p1ai/api/v1';
 

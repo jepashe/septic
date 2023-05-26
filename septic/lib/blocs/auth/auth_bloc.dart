@@ -42,6 +42,7 @@ class AuthenticationBloc
       try {
         final user = await _authenticationRepository.signUp(
             email: event.email, name: event.name);
+        _storeRepository.addUser(user);
       } catch (e) {
         emit(AutenticationErrorState(error: 'Ошибка, бля'));
       }
@@ -60,13 +61,13 @@ class AuthenticationBloc
       emit(AutenticationInProgressState());
 
       try {
-        final bool isConfirm =
-            await _authenticationRepository.confirmEmail(pin: event.pin);
-
-        if (isConfirm) {
-          emit(AutenticationConfirmPinState());
-        } else {
-          emit(AutenticationErrorState(error: 'Неверный код подтверждения'));
+        final user = _storeRepository.readUser();
+        final id = user!.user_id;
+        if (id != null) {
+          final user_new = await _authenticationRepository.confirmEmail(
+              pin: event.pin, id: id);
+          _storeRepository.addUser(user_new);
+          emit(AutenticationGetTokenState());
         }
       } catch (e) {
         emit(AutenticationErrorState(error: 'Ошибка, бля'));

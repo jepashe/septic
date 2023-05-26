@@ -20,8 +20,8 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
     try {
       const String defaultUser = """{
         "user_id": 19,
-        "name": "jhkjhkPavel1",
-        "email": "subochev.pavel4@gmail.com",
+        "name": "Pavel",
+        "email": "subochev.pavel@gmail.com",
         "confirmed": 0
     }""";
       final User user = User.fromJson(jsonDecode(defaultUser));
@@ -35,7 +35,10 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
       }
 
       if (_storeRepository.checkConfirmPinUser()) {
-        emit(LoadingAppWithUsersState());
+        final user = _storeRepository.readUser();
+        if (user != null) {
+          emit(LoadingAppWithUsersState(user: user));
+        }
       }
 
       emit(LoadingAppSuccessState());

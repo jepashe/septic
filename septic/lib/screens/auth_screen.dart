@@ -65,6 +65,13 @@ class AuthWidget extends StatelessWidget {
                     }),
                     child: const Text('Назад'),
                   ),
+                  TextButton(
+                    onPressed: (() {
+                      BlocProvider.of<AuthenticationBloc>(context).add(
+                          AuthenticationConfirmPinEvent(pin: _pinInput.text));
+                    }),
+                    child: const Text('Подтвердить'),
+                  ),
                 ],
               )
             ],

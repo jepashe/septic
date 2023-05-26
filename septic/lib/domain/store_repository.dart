@@ -7,7 +7,6 @@ class StoreRepository {
   late Box<User> _usersStore;
 
   Future<void> initStore() async {
-    //Hive.registerAdapter(UserAdapter());
     print(Hive.isAdapterRegistered(0));
     _usersStore = await Hive.openBox<User>('usersStore');
     if (_usersStore.isOpen) {
@@ -20,8 +19,8 @@ class StoreRepository {
     return _usersStore.isEmpty;
   }
 
-  void addUser(User user) {
-    _usersStore.put('defaultUser', user);
+  Future<void> addUser(User user) async {
+    await _usersStore.put('defaultUser', user);
   }
 
   bool checkConfirmPinUser() {
@@ -54,8 +53,8 @@ class StoreRepository {
     return users;
   }
 
-  void readUser(User user) {
-    _usersStore.get(user);
+  User? readUser() {
+    return _usersStore.get('defaulUser');
   }
 
   void printAllUsers() {

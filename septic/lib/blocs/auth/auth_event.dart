@@ -19,4 +19,6 @@ class AuthenticationConfirmPinEvent extends AuthenticationEvent {
   });
 }
 
+class AuthenticationGetTokenEvent extends AuthenticationEvent {}
+
 class AutenticationNotEvent extends AuthenticationEvent {}

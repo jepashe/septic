@@ -6,11 +6,11 @@ class AuthenticationRepository {
       : _septicClient = septicApi ?? ApiClient();
   final ApiClient _septicClient;
 
-  Future<User?> signUp({required String name, required String email}) async {
+  Future<User> signUp({required String name, required String email}) async {
     return _septicClient.signUp(name: name, email: email);
   }
 
-  Future<bool> confirmEmail({required String pin}) async {
-    return true;
+  Future<User> confirmEmail({required int id, required String pin}) async {
+    return _septicClient.confirmEmail(id: id, pin: pin);
   }
 }
