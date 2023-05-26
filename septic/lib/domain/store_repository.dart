@@ -54,7 +54,7 @@ class StoreRepository {
   }
 
   User? readUser() {
-    return _usersStore.get('defaulUser');
+    return _usersStore.get('defaultUser');
   }
 
   void printAllUsers() {
