@@ -25,7 +25,6 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
         "confirmed": 0
     }""";
       final User user = User.fromJson(jsonDecode(defaultUser));
-      await _storeRepository.initStore();
       _storeRepository.deleteUsers();
       _storeRepository.addUser(user);
       _storeRepository.printAllUsers();
