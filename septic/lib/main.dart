@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:septic/blocs/auth/auth_bloc.dart';
 import 'package:septic/core/app.dart';
+import 'package:septic/domain/store_repository.dart';
 import 'package:septic/entity/user.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -27,6 +28,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  final usersStore = await Hive.openBox<User>('usersStore');
+
   final fcmToken = await FirebaseMessaging.instance.getToken();
   /*
   if (fcmToken != null) {
@@ -34,5 +37,5 @@ Future<void> main() async {
   }*/
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Bloc.observer = MyBlocObserver();
-  runApp(const MyApp());
+  runApp(MyApp(store: usersStore));
 }

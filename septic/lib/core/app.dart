@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:septic/blocs/auth/auth_bloc.dart';
 import 'package:septic/blocs/load_app/load_bloc.dart';
 import 'package:septic/core/navigation.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
+import 'package:septic/entity/user.dart';
 
 class MyApp extends StatelessWidget {
   static final mainNavigation = MainNavigation();
   const MyApp({
+    required this.store,
     Key? key,
   }) : super(key: key);
+
+  final Box<User> store;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider<LoadingAppBloc>(
-              create: (context) =>
-                  LoadingAppBloc(storeRepository: StoreRepository())),
+              create: (context) => LoadingAppBloc(
+                  storeRepository: StoreRepository(store: store))),
           BlocProvider<AuthenticationBloc>(
               create: (context) => AuthenticationBloc(
                   authenticationRepository: AuthenticationRepository(),
-                  storeRepository: StoreRepository()))
+                  storeRepository: StoreRepository(store: store)))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

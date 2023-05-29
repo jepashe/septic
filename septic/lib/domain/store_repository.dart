@@ -2,17 +2,9 @@ import 'package:hive/hive.dart';
 import 'package:septic/entity/user.dart';
 
 class StoreRepository {
-  StoreRepository();
+  StoreRepository({required Box<User> store}) : _usersStore = store;
 
-  late Box<User> _usersStore;
-
-  Future<void> initStore() async {
-    print(Hive.isAdapterRegistered(0));
-    _usersStore = await Hive.openBox<User>('usersStore');
-    if (_usersStore.isOpen) {
-      print('Хранилище открыто');
-    }
-  }
+  final Box<User> _usersStore;
 
   bool checkIsEmpty() {
     print('Хранилище: ${_usersStore.isEmpty}');
