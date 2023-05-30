@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:septic/blocs/auth/auth_bloc.dart';
-import 'package:septic/domain/api_client_old.dart';
+import 'package:septic/blocs/sign_up/signup_bloc.dart';
 import 'package:septic/core/navigation.dart';
 
-class AuthScreen extends StatelessWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +14,15 @@ class AuthScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [AuthWidget()],
+          children: const [SignUpWidget()],
         ),
       ),
     );
   }
 }
 
-class AuthWidget extends StatelessWidget {
-  const AuthWidget({
+class SignUpWidget extends StatelessWidget {
+  const SignUpWidget({
     Key? key,
   }) : super(key: key);
 
@@ -31,25 +30,27 @@ class AuthWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _nameInput = TextEditingController();
     final _emailInput = TextEditingController();
-    final _pinInput = TextEditingController();
+    final _passwordInput = TextEditingController();
+    final _codeInput = TextEditingController();
 
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+    return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
-        if (state is AutenticationErrorState) {
+        if (state is SignUpErrorState) {
           final snackBar = SnackBar(content: Text(state.error));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-        if (state is AutenticationConfirmPinState) {
+
+        if (state is SignUpSucsessState) {
           Navigator.pushNamed(context, MainNavigationRouteNames.titleScreen);
         }
       },
       builder: (context, state) {
-        if (state is AutenticationWaitingPinState) {
+        if (state is SignUpEnteringConfirmCodeEmailState) {
           return Column(
             children: [
               const Text('Введите код из письма'),
               TextField(
-                controller: _pinInput,
+                controller: _codeInput,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -60,15 +61,15 @@ class AuthWidget extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: (() {
-                      BlocProvider.of<AuthenticationBloc>(context)
-                          .add(AutenticationNotEvent());
+                      BlocProvider.of<SignUpBloc>(context)
+                          .add(SignUpEnteringFieldEvent());
                     }),
                     child: const Text('Назад'),
                   ),
                   TextButton(
                     onPressed: (() {
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                          AuthenticationConfirmPinEvent(pin: _pinInput.text));
+                      BlocProvider.of<SignUpBloc>(context).add(
+                          SignUpConfirmCodePinEvent(code: _codeInput.text));
                     }),
                     child: const Text('Подтвердить'),
                   ),
@@ -77,19 +78,17 @@ class AuthWidget extends StatelessWidget {
             ],
           );
         }
-        if (state is AutenticationInProgressState) {
+        if (state is SignUpInProgressState) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        if (state is AutenticationErrorState) {
+        if (state is SignUpErrorState) {
           final snackBar = SnackBar(content: Text(state.error));
           WidgetsBinding.instance.addPostFrameCallback(
               (_) => ScaffoldMessenger.of(context).showSnackBar(snackBar));
         }
         return Column(children: [
-          const SizedBox(height: 5),
-          const SizedBox(height: 5),
           TextField(
             decoration: InputDecoration(
               labelText: 'Имя пользователя',
@@ -99,8 +98,7 @@ class AuthWidget extends StatelessWidget {
             ),
             controller: _nameInput,
           ),
-          const SizedBox(height: 20),
-          const SizedBox(height: 5),
+          const SizedBox(height: 25),
           TextField(
             decoration: InputDecoration(
               labelText: 'Электронная почта',
@@ -111,23 +109,23 @@ class AuthWidget extends StatelessWidget {
             controller: _emailInput,
           ),
           const SizedBox(height: 25),
-          TextButton(
-            style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.grey)),
-            onPressed: (() {
-              context.read<AuthenticationBloc>().add(AuthenticationSignUpEvent(
-                  email: _emailInput.text, name: _nameInput.text));
-            }),
-            child: const Text('Регистрация'),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Пароль',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            controller: _passwordInput,
           ),
           TextButton(
-            style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.grey)),
-            onPressed: () {
-              ApiClient()
-                  .signUp(email: _emailInput.text, name: _nameInput.text);
-            },
-            child: const Text('Тест'),
+            onPressed: (() {
+              context.read<SignUpBloc>().add(SignUpNewUserEvent(
+                  email: _emailInput.text,
+                  name: _nameInput.text,
+                  password: _passwordInput.text));
+            }),
+            child: const Text('Зарегистрироватся'),
           ),
         ]);
       },

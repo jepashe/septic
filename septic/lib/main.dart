@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:septic/blocs/auth/auth_bloc.dart';
+import 'package:septic/blocs/sign_up/signup_bloc.dart';
 import 'package:septic/core/app.dart';
-import 'package:septic/domain/store_repository.dart';
 import 'package:septic/entity/user.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

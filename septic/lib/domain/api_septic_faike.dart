@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:septic/entity/user.dart';
 
 class ApiClient {
@@ -28,7 +27,7 @@ class ApiClient {
     return User(user_id: 0, name: name, email: email, confirmed: 0);
   }
 
-  Future<void> confirmEmail({required int id, required String pin}) async {
+  Future<void> confirmEmail({required int id, required String code}) async {
     const confirmEmailJson = """{
     "success": true
 }""";

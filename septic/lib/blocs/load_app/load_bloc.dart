@@ -18,21 +18,22 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
   _onLoadingAppStart(
       LoadingAppStartEvent event, Emitter<LoadingAppState> emit) async {
     try {
+      /*
       const String defaultUser = """{
         "user_id": 19,
         "name": "Pavel",
         "email": "subochev.pavel@gmail.com",
         "confirmed": 0
     }""";
-      final User user = User.fromJson(jsonDecode(defaultUser));
+      final User user = User.fromJson(jsonDecode(defaultUser));*/
       _storeRepository.deleteUsers();
-      _storeRepository.addUser(user);
-      _storeRepository.printAllUsers();
+      //_storeRepository.addUser(user);
+      //_storeRepository.printAllUsers();
 
       if (_storeRepository.checkIsEmpty()) {
         emit(LoadingAppWithoutUsersState());
       }
-
+      /*
       if (_storeRepository.checkConfirmPinUser()) {
         final user = _storeRepository.readUser();
         if (user != null) {
@@ -40,7 +41,7 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
         }
       }
 
-      emit(LoadingAppSuccessState());
+      emit(LoadingAppSuccessState());*/
     } catch (e) {
       emit(LoadingAppErrorState());
     }

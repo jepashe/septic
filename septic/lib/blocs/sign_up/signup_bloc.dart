@@ -3,29 +3,27 @@ import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
 
-part 'auth_event.dart';
-part 'auth_state.dart';
+part 'signup_event.dart';
+part 'signup_state.dart';
 
-class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc(
+class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
+  SignUpBloc(
       {required AuthenticationRepository authenticationRepository,
       required StoreRepository storeRepository})
       : _authenticationRepository = authenticationRepository,
         _storeRepository = storeRepository,
-        super(AutenticationNotState()) {
-    on<AuthenticationSignUpEvent>(_onAuthenticationSignUp);
-    on<AuthenticationConfirmPinEvent>(_onAuthenticationConfirmPin);
-    on<AuthenticationWaitingConfirmPinEvent>(
-        (event, emit) => emit(AutenticationWaitingPinState()));
-    on<AutenticationNotEvent>((event, emit) => emit(AutenticationNotState()));
+        super(SignUpEnteringFieldState()) {
+    on<SignUpNewUserEvent>(_onSignUpNewUser);
+    on<SignUpConfirmCodePinEvent>(_onSignUpConfirmCodePin);
+    on<SignUpEnteringFieldEvent>(
+        (event, emit) => emit(SignUpEnteringFieldState()));
+    //on<AutenticationNotEvent>((event, emit) => emit(AutenticationNotState()));*/
   }
 
   final AuthenticationRepository _authenticationRepository;
   final StoreRepository _storeRepository;
 
-  _onAuthenticationSignUp(AuthenticationSignUpEvent event,
-      Emitter<AuthenticationState> emit) async {
+  _onSignUpNewUser(SignUpNewUserEvent event, Emitter<SignUpState> emit) async {
     //Валидация email
     bool emailValid({required String email}) {
       final bool emailValid = RegExp(
@@ -35,48 +33,46 @@ class AuthenticationBloc
     }
 
     if (event.email.isEmpty || event.name.isEmpty) {
-      emit(AutenticationErrorState(error: 'Заполните форму входа'));
-      emit(AutenticationNotState());
+      emit(SignUpErrorState(error: 'Заполните форму входа'));
+      emit(SignUpEnteringFieldState());
     } else if (emailValid(email: event.email)) {
-      emit(AutenticationInProgressState());
+      emit(SignUpInProgressState());
       try {
         final user = await _authenticationRepository.signUp(
             email: event.email, name: event.name);
         _storeRepository.addUser(user);
       } catch (e) {
-        emit(AutenticationErrorState(error: 'Ошибка, бля'));
+        emit(SignUpErrorState(error: 'Ошибка, бля'));
       }
     } else {
-      emit(AutenticationErrorState(error: 'Заполните email правильно'));
-      emit(AutenticationNotState());
+      emit(SignUpErrorState(error: 'Заполните email правильно'));
+      emit(SignUpEnteringFieldState());
     }
   }
 
-  _onAuthenticationConfirmPin(AuthenticationConfirmPinEvent event,
-      Emitter<AuthenticationState> emit) async {
-    if (event.pin.isEmpty) {
-      emit(AutenticationErrorState(error: 'Заполните код подтверждения'));
-      emit(AutenticationWaitingPinState());
+  _onSignUpConfirmCodePin(
+      SignUpConfirmCodePinEvent event, Emitter<SignUpState> emit) async {
+    if (event.code.isEmpty) {
+      emit(SignUpErrorState(error: 'Заполните код подтверждения'));
+      emit(SignUpEnteringConfirmCodeEmailState());
     } else {
-      emit(AutenticationInProgressState());
+      emit(SignUpInProgressState());
 
       try {
         final user = _storeRepository.readUser();
         final id = user!.user_id;
         if (id != null) {
-          final user_new = await _authenticationRepository.confirmEmail(
-              pin: event.pin, id: id);
-          _storeRepository.addUser(user_new);
-          emit(AutenticationGetTokenState());
+          await _authenticationRepository.confirmEmail(
+              code: event.code, id: id);
         }
       } catch (e) {
-        emit(AutenticationErrorState(error: 'Ошибка, бля'));
+        //emit(AutenticationErrorState(error: 'Ошибка, бля'));
       }
     }
   }
 
   @override
-  void onEvent(AuthenticationEvent event) {
+  void onEvent(SignUpEvent event) {
     super.onEvent(event);
     print(event);
   }
