@@ -13,7 +13,9 @@ class ApiClient {
     },
     "success": true
 }""";
-      final User user = User.fromJson(jsonDecode(defaultUser));
+      
+      final Map<String, dynamic> json = jsonDecode(defaultUser);
+      final User user = User.fromJson(json['user']);
       return user;
     }
     const errorJson = """{
