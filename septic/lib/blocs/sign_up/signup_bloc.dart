@@ -44,7 +44,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         _storeRepository.addUser(user);
 
       } catch (e) {
-        emit(SignUpErrorState(error: 'Ошибка, бля'));
+        emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));
       }
     } else {
       emit(SignUpErrorState(error: 'Заполните email правильно'));
