@@ -64,13 +64,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       try {
         final user = _storeRepository.readUser();
 
-        user ?? user.
+       
         final id = user!.user_id;
         if (id != null) {
           final isConfirm = await _authenticationRepository.confirmEmail(
               code: event.code, id: id);
           if (isConfirm){
-            user.confirmed = 1;
+            final new_user = user.copyWith(confirmed: 1);
+            print(new_user);
           }
         }
       } catch (e) {
