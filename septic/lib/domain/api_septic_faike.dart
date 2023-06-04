@@ -29,11 +29,15 @@ class ApiClient {
     return User(user_id: 0, name: name, email: email, confirmed: 0);
   }
 
-  Future<void> confirmEmail({required int id, required String code}) async {
+  Future<bool> confirmEmail({required int id, required String code}) async {
     const confirmEmailJson = """{
     "success": true
 }""";
-    final bool isConfirm = jsonDecode(confirmEmailJson);
+    final Map<String, dynamic> isConfirm = jsonDecode(confirmEmailJson);
+    if(isConfirm['success'] == true) {
+      return true;
+    }
+    return false;
   }
 
   Future<void> getToken(

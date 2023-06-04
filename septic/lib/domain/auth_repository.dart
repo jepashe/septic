@@ -10,7 +10,7 @@ class AuthenticationRepository {
     return _septicClient.signUp(name: name, email: email);
   }
 
-  Future<void> confirmEmail({required int id, required String code}) async {
+  Future<bool> confirmEmail({required int id, required String code}) async {
     return _septicClient.confirmEmail(id: id, code: code);
   }
 

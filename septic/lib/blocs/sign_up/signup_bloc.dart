@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
+import 'package:septic/entity/user.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
@@ -40,8 +41,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       try {
         final user = await _authenticationRepository.signUp(
             email: event.email, name: event.name);
-        
         _storeRepository.addUser(user);
+        emit(SignUpEnteringConfirmCodeEmailState());
 
       } catch (e) {
         emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));
@@ -62,13 +63,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       try {
         final user = _storeRepository.readUser();
+
+        user ?? user.
         final id = user!.user_id;
         if (id != null) {
-          await _authenticationRepository.confirmEmail(
+          final isConfirm = await _authenticationRepository.confirmEmail(
               code: event.code, id: id);
+          if (isConfirm){
+            user.confirmed = 1;
+          }
         }
       } catch (e) {
-        //emit(AutenticationErrorState(error: 'Ошибка, бля'));
+        emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));
       }
     }
   }
