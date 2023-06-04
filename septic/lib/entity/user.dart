@@ -18,10 +18,10 @@ class User {
   final String? token;
 
   User({
-    required this.user_id,
     required this.name,
     required this.email,
     required this.confirmed,
+    required this.user_id,
     this.password,
     this.token,
   });
@@ -30,6 +30,8 @@ class User {
   String toString() {
     return "User Name: ${name}, Email: ${email}, Confirmed User: ${confirmed}, User ID: ${user_id.toString()}, Password User: ${password}, Token User: ${token}.";
   }
+
+  User copyWith({String? name, String? email, int? confirmed, int? user_id, String? password, String? token}) => User(name: name ?? this.name , email: email ?? this.email, confirmed: confirmed ?? this.confirmed, user_id: user_id ?? this.user_id, password: password ?? this.password, token: token ?? this.token);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
