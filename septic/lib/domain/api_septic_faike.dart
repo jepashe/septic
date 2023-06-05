@@ -13,7 +13,7 @@ class ApiClient {
     },
     "success": true
 }""";
-      
+
       final Map<String, dynamic> json = jsonDecode(defaultUser);
       final User user = User.fromJson(json['user']);
       return user;
@@ -34,13 +34,13 @@ class ApiClient {
     "success": true
 }""";
     final Map<String, dynamic> isConfirm = jsonDecode(confirmEmailJson);
-    if(isConfirm['success'] == true) {
+    if (isConfirm['success'] == true) {
       return true;
     }
     return false;
   }
 
-  Future<void> getToken(
+  Future<String> getToken(
       {required String email, required String password}) async {
     const tokenJson = """{
     "token": "36|97D4SjIHARAFShSfzno0NxJlQfD0VQdrr67henqx",
@@ -48,6 +48,7 @@ class ApiClient {
     "refresh_token": "37|5lACP858egXF3cVc154jVGZ52dLkA4FdWBrXXA09",
     "success": true
 }""";
-    final response = jsonDecode(tokenJson) as List<dynamic>;
+    final Map<String, dynamic> response = jsonDecode(tokenJson);
+    return response['token'];
   }
 }

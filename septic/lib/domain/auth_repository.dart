@@ -14,7 +14,7 @@ class AuthenticationRepository {
     return _septicClient.confirmEmail(id: id, code: code);
   }
 
-  Future<void> getToken(
+  Future<String> getToken(
       {required String email, required String password}) async {
     return _septicClient.getToken(email: email, password: password);
   }

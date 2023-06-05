@@ -43,7 +43,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             email: event.email, name: event.name);
         _storeRepository.addUser(user);
         emit(SignUpEnteringConfirmCodeEmailState());
-
       } catch (e) {
         emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));
       }
@@ -63,15 +62,21 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       try {
         final user = _storeRepository.readUser();
-
-       
-        final id = user!.user_id;
-        if (id != null) {
-          final isConfirm = await _authenticationRepository.confirmEmail(
-              code: event.code, id: id);
-          if (isConfirm){
-            final new_user = user.copyWith(confirmed: 1);
-            print(new_user);
+        if (user != null) {
+          final id = user.user_id;
+          if (id != null) {
+            final isConfirm = await _authenticationRepository.confirmEmail(
+                code: event.code, id: id);
+            if (isConfirm) {
+              final email = user.email;
+              final password = user.password;
+              if (email != null && password != null) {
+                final token = await _authenticationRepository.getToken(
+                    email: email, password: password);
+                final new_user = user.copyWith(confirmed: 1, token: token);
+                print(new_user);
+              }
+            }
           }
         }
       } catch (e) {

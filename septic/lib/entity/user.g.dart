@@ -17,10 +17,10 @@ class UserAdapter extends TypeAdapter<User> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return User(
-      user_id: fields[3] as int?,
       name: fields[0] as String?,
       email: fields[1] as String?,
       confirmed: fields[2] as int?,
+      user_id: fields[3] as int?,
       password: fields[4] as String?,
       token: fields[5] as String?,
     );
