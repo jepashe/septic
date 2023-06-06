@@ -33,7 +33,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       return emailValid;
     }
 
-    if (event.email.isEmpty || event.name.isEmpty) {
+    if (event.email.isEmpty || event.name.isEmpty || event.password.isEmpty) {
       emit(SignUpErrorState(error: 'Заполните форму входа'));
       emit(SignUpEnteringFieldState());
     } else if (emailValid(email: event.email)) {
@@ -41,7 +41,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       try {
         final user = await _authenticationRepository.signUp(
             email: event.email, name: event.name);
-        _storeRepository.addUser(user);
+        final user_whith_password = user.copyWith(password: event.password);
+        _storeRepository.addUser(user_whith_password);
+
         emit(SignUpEnteringConfirmCodeEmailState());
       } catch (e) {
         emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));

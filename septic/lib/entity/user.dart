@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'user.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 10)
 class User {
   @HiveField(0)
   final String? name;
@@ -31,7 +31,20 @@ class User {
     return "User Name: ${name}, Email: ${email}, Confirmed User: ${confirmed}, User ID: ${user_id.toString()}, Password User: ${password}, Token User: ${token}.";
   }
 
-  User copyWith({String? name, String? email, int? confirmed, int? user_id, String? password, String? token}) => User(name: name ?? this.name , email: email ?? this.email, confirmed: confirmed ?? this.confirmed, user_id: user_id ?? this.user_id, password: password ?? this.password, token: token ?? this.token);
+  User copyWith(
+          {String? name,
+          String? email,
+          int? confirmed,
+          int? user_id,
+          String? password,
+          String? token}) =>
+      User(
+          name: name ?? this.name,
+          email: email ?? this.email,
+          confirmed: confirmed ?? this.confirmed,
+          user_id: user_id ?? this.user_id,
+          password: password ?? this.password,
+          token: token ?? this.token);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
