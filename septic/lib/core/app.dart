@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:septic/blocs/load_app/load_bloc.dart';
+import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/blocs/sign_up/signup_bloc.dart';
 import 'package:septic/core/navigation.dart';
 import 'package:septic/domain/auth_repository.dart';
+import 'package:septic/domain/septic_repository.dart';
 import 'package:septic/domain/store_repository.dart';
 import 'package:septic/entity/user.dart';
 
@@ -28,7 +29,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<SignUpBloc>(
               create: (context) => SignUpBloc(
                   authenticationRepository: AuthenticationRepository(),
-                  storeRepository: StoreRepository(store: store)))
+                  storeRepository: StoreRepository(store: store))),
+          BlocProvider<SepticBloc>(
+            create: (context) => SepticBloc(
+                septicRepository: SepticRepository(),
+                storeRepository: StoreRepository(store: store)),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
