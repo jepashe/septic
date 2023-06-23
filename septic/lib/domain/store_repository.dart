@@ -31,6 +31,14 @@ class StoreRepository {
     return false;
   }
 
+  bool chekStoreSepticUser() {
+    final user = _usersStore.get('defaultUser');
+    if (user!.septics == null) {
+      return false;
+    }
+    return true;
+  }
+
   void deleteUsers() {
     final keys = _usersStore.keys;
     _usersStore.deleteAll(keys);
