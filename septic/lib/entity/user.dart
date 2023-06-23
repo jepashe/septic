@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:septic/entity/septic.dart';
 
 part 'user.g.dart';
 
@@ -16,15 +17,17 @@ class User {
   final String? password;
   @HiveField(5)
   final String? token;
+  @HiveField(6)
+  final List<Septic>? septics;
 
-  User({
-    required this.name,
-    required this.email,
-    required this.confirmed,
-    required this.user_id,
-    this.password,
-    this.token,
-  });
+  User(
+      {required this.name,
+      required this.email,
+      required this.confirmed,
+      required this.user_id,
+      this.password,
+      this.token,
+      this.septics});
 
   @override
   String toString() {
