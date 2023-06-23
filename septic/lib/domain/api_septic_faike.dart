@@ -52,3 +52,30 @@ class ApiClient {
     return response['token'];
   }
 }
+
+Future<void> addSeptic(
+    {required String number,
+    required String address,
+    required String phone,
+    required String contact,
+    required double volume,
+    required double radius,
+    required double height,
+    required double shift,
+    required double threshold}) async {
+  const septicJson = """{
+    "device": {
+        "address": "труда",
+        "phone": "89029695667",
+        "contact": "павел",
+        "volume": "1",
+        "height": "1",
+        "shift": "1",
+        "threshold": "1",
+        "user_id": 24,
+        "api_key": "38|uCJxscmLsk12SeoU8gUCWLddBDtcAuI3EiLgbrkm",
+        "device_id": 45
+    },
+    "success": true
+} """;
+}
