@@ -19,7 +19,14 @@ class SepticBloc extends Bloc<SepticEvent, SepticState> {
   final SepticRepository _septicRepository;
   final StoreRepository _storeRepository;
 
-  _onSepticInit(SepticInitEvent event, Emitter<SepticState> emit) async {}
+  _onSepticInit(SepticInitEvent event, Emitter<SepticState> emit) async {
+    final isStoreSeptic = _storeRepository.chekStoreSepticUser();
+    if (isStoreSeptic) {
+      print('Есть септик');
+    } else {
+      emit(SepticNotState());
+    }
+  }
 
   @override
   void onEvent(SepticEvent event) {

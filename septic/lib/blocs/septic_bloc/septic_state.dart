@@ -6,3 +6,8 @@ class SepticInitState extends SepticState {
   @override
   List<Object?> get props => [];
 }
+
+class SepticNotState extends SepticState {
+  @override
+  List<Object?> get props => [];
+}
