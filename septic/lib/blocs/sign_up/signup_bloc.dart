@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
-import 'package:septic/entity/user.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
@@ -77,6 +76,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
                     email: email, password: password);
                 final new_user = user.copyWith(confirmed: 1, token: token);
                 print(new_user);
+                emit(SignUpSucsessState());
               }
             }
           }
