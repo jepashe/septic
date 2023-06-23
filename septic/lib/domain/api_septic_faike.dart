@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:septic/entity/septic.dart';
 import 'package:septic/entity/user.dart';
 
 class ApiClient {
@@ -51,19 +52,18 @@ class ApiClient {
     final Map<String, dynamic> response = jsonDecode(tokenJson);
     return response['token'];
   }
-}
 
-Future<void> addSeptic(
-    {required String number,
-    required String address,
-    required String phone,
-    required String contact,
-    required double volume,
-    required double radius,
-    required double height,
-    required double shift,
-    required double threshold}) async {
-  const septicJson = """{
+  Future<Septic> addSeptic(
+      {required String number,
+      required String address,
+      required String phone,
+      required String contact,
+      required double volume,
+      required double radius,
+      required double height,
+      required double shift,
+      required double threshold}) async {
+    const septicJson = """{
     "device": {
         "address": "труда",
         "phone": "89029695667",
@@ -78,4 +78,8 @@ Future<void> addSeptic(
     },
     "success": true
 } """;
+    final Map<String, dynamic> json = jsonDecode(septicJson);
+    final Septic septic = Septic.fromJson(json['device']);
+    return septic;
+  }
 }
