@@ -49,6 +49,7 @@ class SignUpWidget extends StatelessWidget {
           return Column(
             children: [
               const Text('Введите код из письма'),
+              const SizedBox(height: 25),
               TextField(
                 controller: _codeInput,
                 decoration: InputDecoration(
@@ -57,21 +58,50 @@ class SignUpWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 25),
               Row(
                 children: [
                   TextButton(
-                    onPressed: (() {
-                      BlocProvider.of<SignUpBloc>(context)
-                          .add(SignUpEnteringFieldEvent());
-                    }),
-                    child: const Text('Назад'),
-                  ),
-                  TextButton(
+                    child: const Text("Назад", style: TextStyle(fontSize: 14)),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.all(15)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side:
+                                        const BorderSide(color: Colors.blue)))),
                     onPressed: (() {
                       BlocProvider.of<SignUpBloc>(context).add(
                           SignUpConfirmCodePinEvent(code: _codeInput.text));
                     }),
-                    child: const Text('Подтвердить'),
+                  ),
+                  const SizedBox(width: 25),
+                  TextButton(
+                    child: const Text("Подтвердить",
+                        style: TextStyle(fontSize: 14)),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.all(15)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side:
+                                        const BorderSide(color: Colors.blue)))),
+                    onPressed: (() {
+                      BlocProvider.of<SignUpBloc>(context).add(
+                          SignUpConfirmCodePinEvent(code: _codeInput.text));
+                    }),
                   ),
                 ],
               )
@@ -89,6 +119,17 @@ class SignUpWidget extends StatelessWidget {
               (_) => ScaffoldMessenger.of(context).showSnackBar(snackBar));
         }
         return Column(children: [
+          const Icon(
+            Icons.account_circle,
+            color: Colors.blue,
+            size: 200,
+          ),
+          const Text(
+            'Регистрация нового пользователя',
+            style: TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 25),
           TextField(
             decoration: InputDecoration(
               labelText: 'Имя пользователя',
@@ -118,15 +159,27 @@ class SignUpWidget extends StatelessWidget {
             ),
             controller: _passwordInput,
           ),
+          const SizedBox(height: 25),
           TextButton(
-            onPressed: (() {
-              context.read<SignUpBloc>().add(SignUpNewUserEvent(
-                  email: _emailInput.text,
-                  name: _nameInput.text,
-                  password: _passwordInput.text));
-            }),
-            child: const Text('Зарегистрироватся'),
-          ),
+              child: const Text("Зарегистрироватся",
+                  style: TextStyle(fontSize: 14)),
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      const EdgeInsets.all(15)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: const BorderSide(color: Colors.blue)))),
+              onPressed: (() {
+                context.read<SignUpBloc>().add(SignUpNewUserEvent(
+                    email: _emailInput.text,
+                    name: _nameInput.text,
+                    password: _passwordInput.text));
+              })),
         ]);
       },
     );

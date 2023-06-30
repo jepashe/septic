@@ -6,6 +6,8 @@ class SepticRepository {
       : _septicClient = septicApi ?? ApiClient();
   final ApiClient _septicClient;
 
+  Future<void> listSepticUser() async {}
+
   Future<Septic> addSeptic(
       {required String number,
       required String address,

@@ -29,7 +29,7 @@ Future<void> main() async {
   Hive.registerAdapter(UserAdapter());
   final usersStore = await Hive.openBox<User>('usersStore');
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
+  //final fcmToken = await FirebaseMessaging.instance.getToken();
   /*
   if (fcmToken != null) {
     Hive.box('settings').put('fcmToken', fcmToken);

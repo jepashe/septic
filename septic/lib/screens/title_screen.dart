@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
+import 'package:septic/core/app_bar.dart';
 import 'package:septic/custom_widgets/septic_paint.dart';
 
 class TitleScreen extends StatelessWidget {
@@ -8,37 +9,190 @@ class TitleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.height * 0.05;
+    return Scaffold(
+      appBar: UIApp.appBarUI,
+      body: const SepticWidget(),
+    );
+  }
+}
+
+class SepticWidget extends StatelessWidget {
+  const SepticWidget({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final _number = TextEditingController();
+    final _address = TextEditingController();
+    final _phone = TextEditingController();
+    final _contact = TextEditingController();
+    final _volume = TextEditingController();
+    final _radius = TextEditingController();
+    final _height = TextEditingController();
+    final _shift = TextEditingController();
+    final _threshold = TextEditingController();
+    context.read<SepticBloc>().add(SepticInitEvent());
+
     return BlocBuilder<SepticBloc, SepticState>(builder: (context, state) {
       if (state is SepticNotState) {
-        return Scaffold(
-          body: ElevatedButton(
-              onPressed: () {}, child: const Text('Добавить септик')),
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Добавьте информацию о вашем септике'),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Идентификатор устройства',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _number,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Адрес установки устройства',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _address,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Телефон контакта',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _phone,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Имя контакта',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _contact,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Объем резервуара',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _volume,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Диаметр резервуара',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _radius,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Высота резервуара',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _height,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText:
+                            'Высота установки устройства над максимальным уровнем',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _shift,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Порог уведомления',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      controller: _threshold,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextButton(
+                        child: const Text("Создать новый септик",
+                            style: TextStyle(fontSize: 14)),
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                const EdgeInsets.all(15)),
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.blue),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side:
+                                        const BorderSide(color: Colors.blue)))),
+                        onPressed: (() {})),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         );
       }
-      return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-          title: const Text(
-            'Septic',
-            style: TextStyle(color: Colors.black),
-          ),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Column(children: [
-              const SizedBox(height: 10),
-              const SepticPaint(
-                firstAlarmLevel: 90,
-                secondAlarmLevel: 80,
-                septicLevel: 60,
-              ),
-            ]),
-          ),
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(children: const [
+            SizedBox(height: 10),
+            SepticPaint(
+              firstAlarmLevel: 90,
+              secondAlarmLevel: 80,
+              septicLevel: 70,
+            ),
+          ]),
         ),
       );
     });
