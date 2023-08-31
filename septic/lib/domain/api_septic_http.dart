@@ -5,8 +5,12 @@ import 'package:septic/entity/user.dart';
 class ApiClient {
   final _baseUrl = 'https://app.xn--74-6kcaymg3bmueas.xn--p1ai/api/v1/';
 
-  final _headers = {'Accept': 'application/json'};
+  final _headers = {
+    'Accept': 'application/json',
+    'Content-Type': "application/x-www-form-urlencoded"
+  };
 
+  // Создание нового пользователя
   Future<User> signUp({required String name, required String email}) async {
     final _url = Uri.parse(_baseUrl + 'users');
     Map<String, String> _body = {
@@ -26,6 +30,7 @@ class ApiClient {
     return user;
   }
 
+  // Подтверждение емаила
   Future<User> confirmEmail({required int id, required String pin}) async {
     final _url = Uri.parse(_baseUrl + 'users/$id/confirmation');
     Map<String, String> _body = {
@@ -42,6 +47,23 @@ class ApiClient {
     final Map<String, dynamic> json = jsonDecode(response.body);
     final User user = User.fromJson(json['user']);
     return user;
+  }
+
+  // Получение токена
+
+  Future<String> getToken(
+      {required String email, required String password}) async {
+    final _url = Uri.parse(_baseUrl + 'tokens');
+    Map<String, String> _body = {'email': email, 'password': password};
+    final response = await http.post(_url, body: _body, headers: _headers);
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+    final Map<String, dynamic> token = jsonDecode(response.body);
+
+    return token['token'];
   }
 
   /*

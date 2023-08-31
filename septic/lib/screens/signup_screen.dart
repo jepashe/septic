@@ -28,10 +28,10 @@ class SignUpWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _nameInput = TextEditingController(text: 'Pavel1');
-    final _emailInput = TextEditingController(text: 'subochev.pavel@test.com');
-    final _passwordInput = TextEditingController(text: '12345678');
-    final _codeInput = TextEditingController(text: '12345678');
+    final _nameInput = TextEditingController();
+    final _emailInput = TextEditingController();
+    final _passwordInput = TextEditingController();
+    final _codeInput = TextEditingController();
 
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
