@@ -1,12 +1,12 @@
-part of 'signup_bloc.dart';
+part of 'sign_in_bloc.dart';
 
-abstract class SignUpEvent {}
+abstract class SignInEvent {}
 
 // Для заполнения данных пользователя (Name, Email, Password)
-class SignUpEnteringFieldEvent extends SignUpEvent {}
+class SignUpEnteringFieldEvent extends SignInEvent {}
 
 // При нажатии кнопки зарегестрировать
-class SignUpNewUserEvent extends SignUpEvent {
+class SignUpNewUserEvent extends SignInEvent {
   String email, name, password;
   SignUpNewUserEvent({
     required this.email,
@@ -16,11 +16,11 @@ class SignUpNewUserEvent extends SignUpEvent {
 }
 
 // Для ввода кода подтверждения Email
-class SignUpEnteringConfirmCodeEmailEvent extends SignUpEvent {}
+class SignUpEnteringConfirmCodeEmailEvent extends SignInEvent {}
 
 // При нажатии кнопки подвердить Email
 
-class SignUpConfirmCodePinEvent extends SignUpEvent {
+class SignUpConfirmCodePinEvent extends SignInEvent {
   String code;
   SignUpConfirmCodePinEvent({
     required this.code,
@@ -28,7 +28,7 @@ class SignUpConfirmCodePinEvent extends SignUpEvent {
 }
 
 // Если Email подтвержден запрос на получение токена авторизации
-class SignUpGetTokenEvent extends SignUpEvent {
+class SignUpGetTokenEvent extends SignInEvent {
   String password;
   SignUpGetTokenEvent({
     required this.password,

@@ -44,11 +44,14 @@ class StoreRepository {
     _usersStore.deleteAll(keys);
   }
 
-  List<User?> getAllUsers() {
-    List<User?> users = [];
+  List<User> getAllUsers() {
+    List<User> users = [];
     final keys = _usersStore.keys.toList();
     for (var key in keys) {
-      users.add(_usersStore.get(key));
+      final user = _usersStore.get(key);
+      if (user != null) {
+        users.add(user);
+      }
     }
     return users;
   }

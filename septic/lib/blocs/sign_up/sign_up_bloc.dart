@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
 
-part 'signup_event.dart';
-part 'signup_state.dart';
+part 'sign_up_event.dart';
+part 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc(

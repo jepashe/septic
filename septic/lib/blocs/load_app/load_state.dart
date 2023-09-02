@@ -8,11 +8,7 @@ class LoadingAppStartState extends LoadingAppState {}
 class LoadingAppWithoutUsersState extends LoadingAppState {}
 
 // Если есть сохраненый пользователь в приложении
-class LoadingAppWithUsersState extends LoadingAppState {
-  final User user;
-
-  LoadingAppWithUsersState({required this.user});
-}
+class LoadingAppWithUsersState extends LoadingAppState {  }
 
 class LoadingAppSuccessState extends LoadingAppState {}
 

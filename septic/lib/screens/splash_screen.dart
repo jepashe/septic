@@ -13,6 +13,9 @@ class SplashScreen extends StatelessWidget {
         if (state is LoadingAppWithoutUsersState) {
           Navigator.pushNamed(context, MainNavigationRouteNames.signup);
         }
+        if (state is LoadingAppWithUsersState) {
+          Navigator.pushNamed(context, MainNavigationRouteNames.signin);
+        }
         if (state is LoadingAppErrorState) {
           const snackBar = SnackBar(content: Text('state.error'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);

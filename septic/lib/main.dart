@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:septic/blocs/sign_up/signup_bloc.dart';
+import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/core/app.dart';
 import 'package:septic/entity/user.dart';
 

@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:septic/domain/store_repository.dart';
 import 'package:septic/entity/user.dart';
@@ -32,6 +32,8 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
 
       if (_storeRepository.checkIsEmpty()) {
         emit(LoadingAppWithoutUsersState());
+      } else {
+        emit(LoadingAppWithUsersState());
       }
       /*
       if (_storeRepository.checkConfirmPinUser()) {
