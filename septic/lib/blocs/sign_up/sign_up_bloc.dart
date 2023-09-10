@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
+import 'package:septic/entity/user.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -17,12 +18,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpConfirmCodePinEvent>(_onSignUpConfirmCodePin);
     on<SignUpEnteringFieldEvent>(
         (event, emit) => emit(SignUpEnteringFieldState()));
-    //on<AutenticationNotEvent>((event, emit) => emit(AutenticationNotState()));*/
+    on<SignUpEnteringConfirmCodeEmailEvent>((event, emit){
+      emit(SignUpEnteringConfirmCodeEmailState(user: event.user));});
   }
 
   final AuthenticationRepository _authenticationRepository;
   final StoreRepository _storeRepository;
-
   _onSignUpNewUser(SignUpNewUserEvent event, Emitter<SignUpState> emit) async {
     //Валидация email
     bool emailValid({required String email}) {
@@ -38,12 +39,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     } else if (emailValid(email: event.email)) {
       emit(SignUpInProgressState());
       try {
-        final user = await _authenticationRepository.signUp(
+        User user = await _authenticationRepository.signUp(
             email: event.email, name: event.name);
-        final user_whith_password = user.copyWith(password: event.password);
-        _storeRepository.addUser(user_whith_password);
-
-        emit(SignUpEnteringConfirmCodeEmailState());
+        user = user.copyWith(password: event.password);
+        _storeRepository.addUser(user);
+        emit(SignUpEnteringConfirmCodeEmailState(user: user));
       } catch (e) {
         emit(SignUpErrorState(error: 'Ошибка, попробуйте снова'));
       }
@@ -57,28 +57,22 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       SignUpConfirmCodePinEvent event, Emitter<SignUpState> emit) async {
     if (event.code.isEmpty) {
       emit(SignUpErrorState(error: 'Заполните код подтверждения'));
-      emit(SignUpEnteringConfirmCodeEmailState());
+      emit(SignUpEnteringConfirmCodeEmailState(user: event.user));
     } else {
       emit(SignUpInProgressState());
 
       try {
-        final user = _storeRepository.readUser();
-        if (user != null) {
-          final id = user.user_id;
-          if (id != null) {
-            final isConfirm = await _authenticationRepository.confirmEmail(
-                code: event.code, id: id);
-            if (isConfirm) {
-              final email = user.email;
-              final password = user.password;
-              if (email != null && password != null) {
-                final token = await _authenticationRepository.getToken(
-                    email: email, password: password);
-                final new_user = user.copyWith(confirmed: 1, token: token);
-                print(new_user);
-                emit(SignUpSucsessState());
-              }
-            }
+        final isConfirm = await _authenticationRepository.confirmEmail(
+            code: event.code, id: event.user.user_id);
+        if (isConfirm) {
+          final email = event.user.email;
+          final password = event.user.password;
+          if (password != null) {
+            final token = await _authenticationRepository.getToken(
+                email: email, password: password);
+            final new_user = event.user.copyWith(confirmed: 1, token: token);
+            _storeRepository.addUser(new_user);
+            emit(SignUpSucsessState());
           }
         }
       } catch (e) {

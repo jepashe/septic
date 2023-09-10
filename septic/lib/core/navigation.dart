@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:septic/screens/sign_in_screen.dart';
 import 'package:septic/screens/sign_up_screen.dart';
-import 'package:septic/screens/splash_screen.dart';
+import 'package:septic/screens/load_screen.dart';
 import 'package:septic/screens/title_screen.dart';
 
 abstract class MainNavigationRouteNames {
@@ -14,7 +14,7 @@ abstract class MainNavigationRouteNames {
 
 class MainNavigation {
   final routes = <String, Widget Function(BuildContext)>{
-    MainNavigationRouteNames.splash: (context) => const SplashScreen(),
+    MainNavigationRouteNames.splash: (context) => const LoadingScreen(),
     MainNavigationRouteNames.signup: (context) => const SignUpScreen(),
     MainNavigationRouteNames.signin: (context) => const SignInScreen(),
     MainNavigationRouteNames.titleScreen: (context) => const TitleScreen(),

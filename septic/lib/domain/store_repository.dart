@@ -8,16 +8,18 @@ class StoreRepository {
 
   bool checkIsEmpty() {
     print('Хранилище: ${_usersStore.isEmpty}');
+    final store = _usersStore.isEmpty;
     return _usersStore.isEmpty;
   }
 
   Future<void> addUser(User user) async {
-    await _usersStore.put('defaultUser', user);
+    await _usersStore.put(user.user_id, user);
   }
 
-  bool checkConfirmPinUser() {
-    final user = _usersStore.get('defaultUser');
-    if (user!.confirmed == 0) {
+
+  bool checkIsConfirmPinUser({required User user}) {
+    final userConfirm = _usersStore.get(user.user_id);
+    if (userConfirm!.confirmed == 0) {
       return true;
     }
     return false;
@@ -31,13 +33,6 @@ class StoreRepository {
     return false;
   }
 
-  bool chekStoreSepticUser() {
-    final user = _usersStore.get('defaultUser');
-    if (user!.septics == null) {
-      return false;
-    }
-    return true;
-  }
 
   void deleteUsers() {
     final keys = _usersStore.keys;
@@ -56,9 +51,15 @@ class StoreRepository {
     return users;
   }
 
-  User? readUser() {
-    return _usersStore.get('defaultUser');
-  }
+
+  User? readUser(int user_id) {
+    return _usersStore.get(user_id);
+    
+    }
+    
+     
+
+
 
   void printAllUsers() {
     final keys = _usersStore.keys.toList();

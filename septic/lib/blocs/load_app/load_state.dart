@@ -8,7 +8,15 @@ class LoadingAppStartState extends LoadingAppState {}
 class LoadingAppWithoutUsersState extends LoadingAppState {}
 
 // Если есть сохраненый пользователь в приложении
-class LoadingAppWithUsersState extends LoadingAppState {  }
+class LoadingAppWithUsersState extends LoadingAppState { 
+  LoadingAppWithUsersState({required this.usersItems});
+  List<DropdownMenuItem> usersItems;
+}
+
+class LoadingAppWhithCurrentUserState extends LoadingAppState{
+  User user;
+  LoadingAppWhithCurrentUserState({required this.user});
+}
 
 class LoadingAppSuccessState extends LoadingAppState {}
 

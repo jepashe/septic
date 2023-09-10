@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:septic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:septic/core/navigation.dart';
+import 'package:septic/entity/user.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context)!.settings.arguments;
+    if (user != null) {
+      user as User;
+      BlocProvider.of<SignUpBloc>(context).add(SignUpEnteringConfirmCodeEmailEvent(user: user));
+    }
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
@@ -46,9 +52,10 @@ class SignUpWidget extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is SignUpEnteringConfirmCodeEmailState) {
+          final userName = state.user.name;
           return Column(
             children: [
-              const Text('Введите код из письма'),
+              Text('$userName введите код из письма'),
               const SizedBox(height: 25),
               TextField(
                 controller: _codeInput,
@@ -78,7 +85,8 @@ class SignUpWidget extends StatelessWidget {
                                         const BorderSide(color: Colors.blue)))),
                     onPressed: (() {
                       BlocProvider.of<SignUpBloc>(context).add(
-                          SignUpConfirmCodePinEvent(code: _codeInput.text));
+                          SignUpConfirmCodePinEvent(
+                              code: _codeInput.text, user: state.user));
                     }),
                   ),
                   const SizedBox(width: 25),
@@ -100,7 +108,8 @@ class SignUpWidget extends StatelessWidget {
                                         const BorderSide(color: Colors.blue)))),
                     onPressed: (() {
                       BlocProvider.of<SignUpBloc>(context).add(
-                          SignUpConfirmCodePinEvent(code: _codeInput.text));
+                          SignUpConfirmCodePinEvent(
+                              code: _codeInput.text, user: state.user));
                     }),
                   ),
                 ],
@@ -128,7 +137,9 @@ class SignUpWidget extends StatelessWidget {
             const Text(
               'Регистрация нового пользователя',
               style: TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
             ),
             const SizedBox(height: 25),
             TextField(
@@ -161,47 +172,45 @@ class SignUpWidget extends StatelessWidget {
               controller: _passwordInput,
             ),
             const SizedBox(height: 25),
-           
             Row(
               children: [
                 TextButton(
-                    child: const Text("Зарегистрировать",
-                        style: TextStyle(fontSize: 14)),
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            const EdgeInsets.all(15)),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: const BorderSide(color: Colors.blue)))),
-                    onPressed: (() {
-                      context.read<SignUpBloc>().add(SignUpNewUserEvent(
-                          email: _emailInput.text,
-                          name: _nameInput.text,
-                          password: _passwordInput.text));
-                    }),),
-                    const SizedBox(width: 25),
+                  child: const Text("Зарегистрировать",
+                      style: TextStyle(fontSize: 14)),
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(15)),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              side: const BorderSide(color: Colors.blue)))),
+                  onPressed: (() {
+                    context.read<SignUpBloc>().add(SignUpNewUserEvent(
+                        email: _emailInput.text,
+                        name: _nameInput.text,
+                        password: _passwordInput.text));
+                  }),
+                ),
+                const SizedBox(width: 25),
                 TextButton(
-                    child: const Text("Войти",
-                        style: TextStyle(fontSize: 14)),
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            const EdgeInsets.all(15)),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: const BorderSide(color: Colors.blue)))),
-                    onPressed: (() {
-                      
-                    }),),
+                  child: const Text("Войти", style: TextStyle(fontSize: 14)),
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(15)),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              side: const BorderSide(color: Colors.blue)))),
+                  onPressed: (() {}),
+                ),
               ],
             ),
           ]),

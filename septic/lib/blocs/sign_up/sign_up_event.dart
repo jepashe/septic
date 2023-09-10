@@ -16,14 +16,18 @@ class SignUpNewUserEvent extends SignUpEvent {
 }
 
 // Для ввода кода подтверждения Email
-class SignUpEnteringConfirmCodeEmailEvent extends SignUpEvent {}
+class SignUpEnteringConfirmCodeEmailEvent extends SignUpEvent {
+  SignUpEnteringConfirmCodeEmailEvent({required this.user});
+  User user;
+}
 
 // При нажатии кнопки подвердить Email
 
 class SignUpConfirmCodePinEvent extends SignUpEvent {
+  User user;
   String code;
   SignUpConfirmCodePinEvent({
-    required this.code,
+    required this.code, required this.user
   });
 }
 

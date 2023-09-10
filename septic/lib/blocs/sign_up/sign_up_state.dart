@@ -19,6 +19,10 @@ class SignUpEnteringFieldState extends SignUpState {
 // В ожиданнии ввода кода подтверждения Email
 
 class SignUpEnteringConfirmCodeEmailState extends SignUpState {
+  SignUpEnteringConfirmCodeEmailState({required this.user});
+
+  final User user;
+
   @override
   List<Object?> get props => [];
 }

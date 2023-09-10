@@ -10,15 +10,18 @@ part 'sign_in_state.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(
       {required AuthenticationRepository authenticationRepository,
-      required StoreRepository storeRepository, })
+      required StoreRepository storeRepository})
       : _authenticationRepository = authenticationRepository,
         _storeRepository = storeRepository,
         super(SignInInitState()) {
-    
+    on<SignInWhithUsers>(_onSignInWhithUsers);
   }
-  
   final AuthenticationRepository _authenticationRepository;
   final StoreRepository _storeRepository;
+  
+  _onSignInWhithUsers(SignInWhithUsers event, Emitter<SignInState> emit) async {
+    emit(SignInInitState());
+  }
 
 }
 class MyBlocObserver extends BlocObserver {

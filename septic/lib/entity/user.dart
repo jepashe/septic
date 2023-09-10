@@ -3,22 +3,21 @@ import 'package:septic/entity/septic.dart';
 
 part 'user.g.dart';
 
-@HiveType(typeId: 10)
+@HiveType(typeId: 0)
 class User {
   @HiveField(0)
-  final String? name;
+  final String name;
   @HiveField(1)
-  final String? email;
+  final String email;
   @HiveField(2)
-  final int? confirmed;
+  final int confirmed;
   @HiveField(3)
-  final int? user_id;
+  final int user_id;
   @HiveField(4)
   final String? password;
   @HiveField(5)
   final String? token;
-  @HiveField(6)
-  final List<Septic>? septics;
+
 
   User(
       {required this.name,
@@ -26,8 +25,7 @@ class User {
       required this.confirmed,
       required this.user_id,
       this.password,
-      this.token,
-      this.septics});
+      this.token,});
 
   @override
   String toString() {
