@@ -63,7 +63,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       try {
         final isConfirm = await _authenticationRepository.confirmEmail(
-            code: event.code, id: event.user.user_id);
+            code: event.code, id: event.user.user_id, email: event.user.email);
         if (isConfirm) {
           final email = event.user.email;
           final password = event.user.password;
@@ -81,13 +81,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     }
   }
 
+  /*
   @override
   void onEvent(SignUpEvent event) {
     super.onEvent(event);
     print(event);
-  }
+  }*/
 }
 
+/*
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
@@ -125,3 +127,4 @@ class MyBlocObserver extends BlocObserver {
     print('onClose -- ${bloc.runtimeType}');
   }
 }
+*/

@@ -24,6 +24,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
 }
+
+/*
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
@@ -61,3 +63,4 @@ class MyBlocObserver extends BlocObserver {
     print('onClose -- ${bloc.runtimeType}');
   }
 }
+*/

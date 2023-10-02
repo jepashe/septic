@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:septic/domain/store_repository.dart';
@@ -18,7 +16,7 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
   final StoreRepository _storeRepository;
 
   void testLoad() {
-    _storeRepository.deleteUsers();
+    //_storeRepository.deleteUsers();
     /*
     const String defaultUser = """{
         "user_id": 19,
@@ -40,6 +38,7 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
     _storeRepository.addUser(user2);
     _storeRepository.printAllUsers();
     */
+    _storeRepository.printAllUsers();
   }
 
   _onLoadingAppStart(
@@ -72,10 +71,11 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
   }
 
   
-
+  /*
   @override
   void onEvent(LoadingAppEvent event) {
     super.onEvent(event);
     print(event);
   }
+  */
 }
