@@ -12,7 +12,8 @@ class SignUpScreen extends StatelessWidget {
     final user = ModalRoute.of(context)!.settings.arguments;
     if (user != null) {
       user as User;
-      BlocProvider.of<SignUpBloc>(context).add(SignUpEnteringConfirmCodeEmailEvent(user: user));
+      BlocProvider.of<SignUpBloc>(context)
+          .add(SignUpEnteringConfirmCodeEmailEvent(user: user));
     }
     return const Scaffold(
       body: SingleChildScrollView(
@@ -20,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: SignUpWidget(),
-            ),
+          ),
         ),
       ),
     );
@@ -70,7 +71,8 @@ class SignUpWidget extends StatelessWidget {
                 Row(
                   children: [
                     TextButton(
-                      child: const Text("Назад", style: TextStyle(fontSize: 14)),
+                      child:
+                          const Text("Назад", style: TextStyle(fontSize: 14)),
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               const EdgeInsets.all(15)),
@@ -78,16 +80,14 @@ class SignUpWidget extends StatelessWidget {
                               MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.blue),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      side:
-                                          const BorderSide(color: Colors.blue)))),
+                          shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  side: const BorderSide(color: Colors.blue)))),
                       onPressed: (() {
-                        BlocProvider.of<SignUpBloc>(context).add(
-                            SignUpConfirmCodePinEvent(
-                                code: _codeInput.text, user: state.user));
+                        BlocProvider.of<SignUpBloc>(context)
+                            .add(SignUpEnteringFieldEvent());
                       }),
                     ),
                     const SizedBox(width: 25),
@@ -101,12 +101,11 @@ class SignUpWidget extends StatelessWidget {
                               MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.blue),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      side:
-                                          const BorderSide(color: Colors.blue)))),
+                          shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  side: const BorderSide(color: Colors.blue)))),
                       onPressed: (() {
                         BlocProvider.of<SignUpBloc>(context).add(
                             SignUpConfirmCodePinEvent(
@@ -153,7 +152,8 @@ class SignUpWidget extends StatelessWidget {
               ),
               controller: _nameInput,
             ),
-            const Text('Имя пользователя должно состоять не менее чем из 6 символов'),
+            const Text(
+                'Имя пользователя должно состоять не менее чем из 6 символов'),
             const SizedBox(height: 25),
             TextField(
               decoration: InputDecoration(
@@ -212,7 +212,10 @@ class SignUpWidget extends StatelessWidget {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                               side: const BorderSide(color: Colors.blue)))),
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    Navigator.pushNamed(
+                        context, MainNavigationRouteNames.signin);
+                  }),
                 ),
               ],
             ),

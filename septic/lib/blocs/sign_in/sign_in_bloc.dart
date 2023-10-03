@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/store_repository.dart';
-import 'package:septic/entity/user.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
@@ -14,15 +13,17 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       : _authenticationRepository = authenticationRepository,
         _storeRepository = storeRepository,
         super(SignInInitState()) {
-    on<SignInWhithUsers>(_onSignInWhithUsers);
+    on<SignInWhithEmailEvent>(_onSignInWhithUsers);
   }
   final AuthenticationRepository _authenticationRepository;
   final StoreRepository _storeRepository;
-  
-  _onSignInWhithUsers(SignInWhithUsers event, Emitter<SignInState> emit) async {
-    emit(SignInInitState());
-  }
 
+  _onSignInWhithUsers(
+      SignInWhithEmailEvent event, Emitter<SignInState> emit) async {
+    await _authenticationRepository.getToken(
+        email: event.email, password: event.password);
+    //emit(SignInInitState());
+  }
 }
 
 /*

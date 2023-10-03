@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:septic/blocs/load_app/load_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
+import 'package:septic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:septic/blocs/sign_up/sign_up_bloc.dart';
 
 import 'package:septic/core/navigation.dart';
@@ -29,6 +30,10 @@ class MyApp extends StatelessWidget {
                   storeRepository: StoreRepository(store: store))),
           BlocProvider<SignUpBloc>(
               create: (context) => SignUpBloc(
+                  authenticationRepository: AuthenticationRepository(),
+                  storeRepository: StoreRepository(store: store))),
+          BlocProvider<SignInBloc>(
+              create: (context) => SignInBloc(
                   authenticationRepository: AuthenticationRepository(),
                   storeRepository: StoreRepository(store: store))),
           BlocProvider<SepticBloc>(

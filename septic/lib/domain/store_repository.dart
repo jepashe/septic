@@ -16,7 +16,6 @@ class StoreRepository {
     await _usersStore.put(user.user_id, user);
   }
 
-
   bool checkIsConfirmPinUser({required User user}) {
     final userConfirm = _usersStore.get(user.user_id);
     if (userConfirm!.confirmed == 0) {
@@ -32,7 +31,6 @@ class StoreRepository {
     }
     return false;
   }
-
 
   void deleteUsers() {
     final keys = _usersStore.keys;
@@ -51,15 +49,17 @@ class StoreRepository {
     return users;
   }
 
-
   User? readUser(int user_id) {
     return _usersStore.get(user_id);
-    
+  }
+
+  void findUser(String email) {
+    final keys = _usersStore.keys.toList();
+    for (var key in keys) {
+      final user = _usersStore.get(key);
+      if (user!.email == email) {}
     }
-    
-     
-
-
+  }
 
   void printAllUsers() {
     final keys = _usersStore.keys.toList();
