@@ -9,3 +9,8 @@ class SignInInitState extends SignInState {
   List<Object?> get props => [];
 }
 
+class SignInSacsefullState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
+
