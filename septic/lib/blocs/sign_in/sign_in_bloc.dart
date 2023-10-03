@@ -20,8 +20,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   _onSignInWhithUsers(
       SignInWhithEmailEvent event, Emitter<SignInState> emit) async {
-    await _authenticationRepository.getToken(
+    final token = await _authenticationRepository.getToken(
         email: event.email, password: event.password);
+    final user = await _storeRepository.findUser(event.email);
+    if (user != null) {
+      user.copyWith(token: token);
+      await _storeRepository.addUser(user);
+    }
     //emit(SignInInitState());
   }
 }
