@@ -18,8 +18,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpConfirmCodePinEvent>(_onSignUpConfirmCodePin);
     on<SignUpEnteringFieldEvent>(
         (event, emit) => emit(SignUpEnteringFieldState()));
-    on<SignUpEnteringConfirmCodeEmailEvent>((event, emit){
-      emit(SignUpEnteringConfirmCodeEmailState(user: event.user));});
+    on<SignUpEnteringConfirmCodeEmailEvent>((event, emit) {
+      emit(SignUpEnteringConfirmCodeEmailState(user: event.user));
+    });
   }
 
   final AuthenticationRepository _authenticationRepository;
@@ -70,7 +71,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           if (password != null) {
             final token = await _authenticationRepository.getToken(
                 email: email, password: password);
-            final new_user = event.user.copyWith(confirmed: 1, token: token);
+            final new_user =
+                event.user.copyWith(confirmed: 1, token: token['token']);
             _storeRepository.addUser(new_user);
             emit(SignUpSucsessState());
           }

@@ -35,6 +35,6 @@ Future<void> main() async {
     Hive.box('settings').put('fcmToken', fcmToken);
   }*/
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  Bloc.observer = MyBlocObserver();
+  //Bloc.observer = MyBlocObserver();
   runApp(MyApp(store: usersStore));
 }

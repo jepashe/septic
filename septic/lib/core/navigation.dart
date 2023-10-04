@@ -17,7 +17,7 @@ class MainNavigation {
     MainNavigationRouteNames.splash: (context) => const LoadingScreen(),
     MainNavigationRouteNames.signup: (context) => const SignUpScreen(),
     MainNavigationRouteNames.signin: (context) => const SignInScreen(),
-    MainNavigationRouteNames.titleScreen: (context) => const TitleScreen(),
+    //MainNavigationRouteNames.titleScreen: (context) => const TitleScreen(),
     //MainNavigationRouteNames.settingsScreen: (context) => SettingsScreen(),
   };
 }

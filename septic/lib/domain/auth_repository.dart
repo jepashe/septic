@@ -1,4 +1,3 @@
-
 import 'package:septic/domain/api_septic_http.dart';
 import 'package:septic/entity/user.dart';
 
@@ -11,12 +10,18 @@ class AuthenticationRepository {
     return _septicClient.signUp(name: name, email: email);
   }
 
-  Future<bool> confirmEmail({required int id, required String code, required String email}) async {
+  Future<bool> confirmEmail(
+      {required int id, required String code, required String email}) async {
     return _septicClient.confirmEmail(id: id, code: code, email: email);
   }
 
-  Future<String> getToken(
+  Future<Map<String, dynamic>> getToken(
       {required String email, required String password}) async {
     return _septicClient.getToken(email: email, password: password);
+  }
+
+  Future<User> getUserInfo(
+      {required String user_id, required String token}) async {
+    return _septicClient.getUserInfo(user_id: user_id, token: token);
   }
 }

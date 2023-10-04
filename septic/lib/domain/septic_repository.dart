@@ -1,3 +1,4 @@
+/*
 import 'package:septic/domain/api_septic_faike.dart';
 import 'package:septic/entity/septic.dart';
 
@@ -30,4 +31,4 @@ class SepticRepository {
       volume: volume,
     );
   }
-}
+}*/

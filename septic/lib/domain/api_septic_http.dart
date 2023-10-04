@@ -31,12 +31,10 @@ class ApiClient {
   }
 
   // Подтверждение емаила
-  Future<bool> confirmEmail({required int id, required String code, required String email}) async {
+  Future<bool> confirmEmail(
+      {required int id, required String code, required String email}) async {
     final _url = Uri.parse(_baseUrl + 'users/$id/confirmation');
-    Map<String, String> _body = {
-      'code': code,
-      'email': email
-    };
+    Map<String, String> _body = {'code': code, 'email': email};
 
     final response = await http.post(_url, body: _body, headers: _headers);
 
@@ -54,7 +52,7 @@ class ApiClient {
 
   // Получение токена
 
-  Future<String> getToken(
+  Future<Map<String, dynamic>> getToken(
       {required String email, required String password}) async {
     final _url = Uri.parse(_baseUrl + 'tokens');
     Map<String, String> _body = {'email': email, 'password': password};
@@ -66,6 +64,22 @@ class ApiClient {
     }
     final Map<String, dynamic> token = jsonDecode(response.body);
 
-    return token['token'];
+    return token;
+  }
+
+  Future<User> getUserInfo(
+      {required String user_id, required String token}) async {
+    final _url = Uri.parse(_baseUrl + 'users/$user_id');
+    var _headerWhithAuth = _headers;
+    _headerWhithAuth['Authorization'] = 'Bearer $token';
+    final response = await http.get(_url, headers: _headerWhithAuth);
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    final User user = User.fromJson(json['user']);
+    return user;
   }
 }

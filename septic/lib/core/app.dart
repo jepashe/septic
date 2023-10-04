@@ -5,7 +5,6 @@ import 'package:septic/blocs/load_app/load_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:septic/blocs/sign_up/sign_up_bloc.dart';
-
 import 'package:septic/core/navigation.dart';
 import 'package:septic/domain/auth_repository.dart';
 import 'package:septic/domain/septic_repository.dart';
@@ -36,10 +35,10 @@ class MyApp extends StatelessWidget {
               create: (context) => SignInBloc(
                   authenticationRepository: AuthenticationRepository(),
                   storeRepository: StoreRepository(store: store))),
-          BlocProvider<SepticBloc>(
+          /*BlocProvider<SepticBloc>(
               create: (context) => SepticBloc(
                   septicRepository: SepticRepository(),
-                  storeRepository: StoreRepository(store: store))),
+                  storeRepository: StoreRepository(store: store))),*/
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

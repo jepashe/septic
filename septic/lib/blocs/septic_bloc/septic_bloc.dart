@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 part 'septic_event.dart';
 part 'septic_state.dart';
-
+/*
 class SepticBloc extends Bloc<SepticEvent, SepticState> {
   SepticBloc(
       {required SepticRepository septicRepository,
@@ -65,3 +65,4 @@ class MyBlocObserver extends BlocObserver {
     print('onClose -- ${bloc.runtimeType}');
   }
 }
+*/
