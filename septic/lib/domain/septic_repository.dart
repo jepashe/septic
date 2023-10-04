@@ -1,5 +1,4 @@
-/*
-import 'package:septic/domain/api_septic_faike.dart';
+import 'package:septic/domain/api_septic_http.dart';
 import 'package:septic/entity/septic.dart';
 
 class SepticRepository {
@@ -7,8 +6,8 @@ class SepticRepository {
       : _septicClient = septicApi ?? ApiClient();
   final ApiClient _septicClient;
 
-  Future<void> listSepticUser() async {}
-
+  Future<void> getUserDevices() async {}
+/*
   Future<Septic> addSeptic(
       {required String number,
       required String address,
@@ -30,5 +29,5 @@ class SepticRepository {
       threshold: threshold,
       volume: volume,
     );
-  }
-}*/
+  }*/
+}

@@ -9,7 +9,13 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _emailInput = TextEditingController();
     final _passwordInput = TextEditingController();
-    return Scaffold(
+    return BlocConsumer<SignInBloc, SignInState>(
+      listener: (context, state) {
+        if (state is SignInSuccessfullState) {
+          Navigator.pushNamed(context, MainNavigationRouteNames.titleScreen);
+        }
+      },
+      builder: (context, state) {return Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
@@ -117,6 +123,7 @@ class SignInScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    );}
+    ); 
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/core/app_bar.dart';
 import 'package:septic/custom_widgets/septic_paint.dart';
-/*
+
 class TitleScreen extends StatelessWidget {
   const TitleScreen({Key? key}) : super(key: key);
 
@@ -197,4 +197,4 @@ class SepticWidget extends StatelessWidget {
       );
     });
   }
-}*/
+}

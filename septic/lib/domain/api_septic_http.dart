@@ -82,4 +82,22 @@ class ApiClient {
     final User user = User.fromJson(json['user']);
     return user;
   }
+
+  Future<User> getUserDevices(
+      {required int user_id, required String token}) async {
+    final _url = Uri.parse(_baseUrl + 'users/$user_id');
+    var _headerWhithAuth = _headers;
+    _headerWhithAuth['Authorization'] = 'Bearer $token';
+    final response = await http.get(_url, headers: _headerWhithAuth);
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    final User user = User.fromJson(json['user']);
+    return user;
+  }
+
+
 }
