@@ -21,7 +21,7 @@ class AuthenticationRepository {
   }
 
   Future<User> getUserInfo(
-      {required String user_id, required String token}) async {
+      {required int user_id, required String token}) async {
     return _septicClient.getUserInfo(user_id: user_id, token: token);
   }
 }

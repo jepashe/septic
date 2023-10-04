@@ -26,7 +26,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (token["success"] == true) {
       final user = await _authenticationRepository.getUserInfo(
           user_id: token['user_id'], token: token['token']);
-      final userWhithToken = user.copyWith(token: token['token']);
+      final userWhithToken = user.copyWith(token: token['token'], password: event.password);
       await _storeRepository.addUser(userWhithToken);
       emit(SignInSuccessfullState(user: userWhithToken));
     }

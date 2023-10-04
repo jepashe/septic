@@ -68,7 +68,7 @@ class ApiClient {
   }
 
   Future<User> getUserInfo(
-      {required String user_id, required String token}) async {
+      {required int user_id, required String token}) async {
     final _url = Uri.parse(_baseUrl + 'users/$user_id');
     var _headerWhithAuth = _headers;
     _headerWhithAuth['Authorization'] = 'Bearer $token';
