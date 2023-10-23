@@ -7,3 +7,7 @@ class SignInWhithEmailEvent extends SignInEvent {
   String email;
   String password;
 }
+
+class SignInRemaindPasswordEvent extends SignInEvent {
+  
+}

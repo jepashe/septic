@@ -15,6 +15,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         _storeRepository = storeRepository,
         super(SignInInitState()) {
     on<SignInWhithEmailEvent>(_onSignInWhithUsers);
+    on<SignInRemaindPasswordEvent>(
+        (event, emit) => emit(SignInRemaindPasswordState()));
   }
   final AuthenticationRepository _authenticationRepository;
   final StoreRepository _storeRepository;

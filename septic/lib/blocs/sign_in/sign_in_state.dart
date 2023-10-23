@@ -15,3 +15,9 @@ class SignInSuccessfullState extends SignInState {
   @override
   List<Object?> get props => [user];
 }
+
+class SignInRemaindPasswordState extends SignInState {
+  @override
+  List<Object?> get props => [];
+
+}
