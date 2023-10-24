@@ -8,6 +8,9 @@ class SignInWhithEmailEvent extends SignInEvent {
   String password;
 }
 
-class SignInRemaindPasswordEvent extends SignInEvent {
-  
+class SignInRemaindPasswordEvent extends SignInEvent {}
+
+class SignInSendForgetPasswordOnEmailEvent extends SignInEvent {
+  String email;
+  SignInSendForgetPasswordOnEmailEvent({required this.email});
 }

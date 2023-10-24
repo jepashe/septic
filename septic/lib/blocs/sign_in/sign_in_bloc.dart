@@ -15,6 +15,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         _storeRepository = storeRepository,
         super(SignInInitState()) {
     on<SignInWhithEmailEvent>(_onSignInWhithUsers);
+    on<SignInSendForgetPasswordOnEmailEvent>(_onSignInSendForgetPassword);
     on<SignInRemaindPasswordEvent>(
         (event, emit) => emit(SignInRemaindPasswordState()));
   }
@@ -28,12 +29,18 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (token["success"] == true) {
       final user = await _authenticationRepository.getUserInfo(
           user_id: token['user_id'], token: token['token']);
-      final userWhithToken = user.copyWith(token: token['token'], password: event.password);
+      final userWhithToken =
+          user.copyWith(token: token['token'], password: event.password);
       await _storeRepository.addUser(userWhithToken);
       emit(SignInSuccessfullState(user: userWhithToken));
     }
-
     //emit(SignInInitState());
+  }
+
+  _onSignInSendForgetPassword(SignInSendForgetPasswordOnEmailEvent event,
+      Emitter<SignInState> emit) async {
+    await _authenticationRepository.forgetPassword(email: event.email);
+    emit(SignInWaitCodeResetPasswordState());
   }
 }
 
