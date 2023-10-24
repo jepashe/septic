@@ -7,136 +7,183 @@ class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _emailInput = TextEditingController();
-    final _passwordInput = TextEditingController();
-    return BlocConsumer<SignInBloc, SignInState>(listener: (context, state) {
-      if (state is SignInSuccessfullState) {
-        Navigator.pushNamed(context, MainNavigationRouteNames.titleScreen);
-      }
-    }, builder: (context, state) {
-      if (state is SignInRemaindPasswordState) {
-        return Scaffold(
-          body: Center(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Column(children: [
-              
-            ]),
-          )),
-        );
-      }
-      return Scaffold(
-        body: Center(
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Вход',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                const SizedBox(height: 25),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Электронная почта',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  controller: _emailInput,
-                ),
-                const SizedBox(height: 25),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Пароль',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  controller: _passwordInput,
-                ),
-                const SizedBox(height: 25),
-                Row(
-                  children: [
-                    TextButton(
-                      child:
-                          const Text("Войти", style: TextStyle(fontSize: 14)),
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.all(15)),
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.blue),
-                          shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  side: const BorderSide(color: Colors.blue)))),
-                      onPressed: (() {
-                        context.read<SignInBloc>().add(SignInWhithEmailEvent(
-                            email: _emailInput.text,
-                            password: _passwordInput.text));
-                      }),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    TextButton(
-                      child:
-                          const Text("Назад", style: TextStyle(fontSize: 14)),
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.all(15)),
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.blue),
-                          shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  side: const BorderSide(color: Colors.blue)))),
-                      onPressed: (() {
-                        Navigator.pushNamed(
-                            context, MainNavigationRouteNames.signup);
-                      }),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    TextButton(
-                      child: const Text("Забыли пароль",
-                          style: TextStyle(fontSize: 14)),
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.all(15)),
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.blue),
-                          shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  side: const BorderSide(color: Colors.blue)))),
-                      onPressed: (() {
-                        context
-                            .read<SignInBloc>()
-                            .add(SignInRemaindPasswordEvent());
-                      }),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: BlocConsumer<SignInBloc, SignInState>(
+                listener: (context, state) {
+              if (state is SignInSuccessfullState) {
+                Navigator.pushNamed(
+                    context, MainNavigationRouteNames.titleScreen);
+              }
+            }, builder: (context, state) {
+              if (state is SignInRemaindPasswordState) {
+                return SignInRemaindPassword();
+              }
+              if (state is SignInWaitCodeResetPasswordState) {}
+              return SignInWhithEmail();
+            }),
           ),
         ),
-      );
-    });
+      ),
+    );
+  }
+}
+
+class SignInRemaindPassword extends StatelessWidget {
+  SignInRemaindPassword({Key? key}) : super(key: key);
+  final _emailInput = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Восстановление пароля',
+          style: TextStyle(
+              color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(height: 25),
+        const Text(
+            'Для восстановления пароля введите email указанный при регистрации'),
+        const SizedBox(height: 25),
+        TextField(
+          decoration: InputDecoration(
+            labelText: 'Электронная почта',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          controller: _emailInput,
+        ),
+        const SizedBox(height: 25),
+        TextButton(
+          child: const Text("Продолжить", style: TextStyle(fontSize: 14)),
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.all(15)),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      side: const BorderSide(color: Colors.blue)))),
+          onPressed: (() {
+            context.read<SignInBloc>().add(
+                SignInSendForgetPasswordOnEmailEvent(email: _emailInput.text));
+          }),
+        ),
+      ],
+    ));
+  }
+}
+
+class SignInWhithEmail extends StatelessWidget {
+  SignInWhithEmail({Key? key}) : super(key: key);
+
+  final _emailInput = TextEditingController();
+  final _passwordInput = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Вход',
+            style: TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 25),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Электронная почта',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            controller: _emailInput,
+          ),
+          const SizedBox(height: 25),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Пароль',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            controller: _passwordInput,
+          ),
+          const SizedBox(height: 25),
+          Row(
+            children: [
+              TextButton(
+                child: const Text("Войти", style: TextStyle(fontSize: 14)),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(15)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: const BorderSide(color: Colors.blue)))),
+                onPressed: (() {
+                  context.read<SignInBloc>().add(SignInWhithEmailEvent(
+                      email: _emailInput.text, password: _passwordInput.text));
+                }),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              TextButton(
+                child: const Text("Назад", style: TextStyle(fontSize: 14)),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(15)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: const BorderSide(color: Colors.blue)))),
+                onPressed: (() {
+                  Navigator.pushNamed(context, MainNavigationRouteNames.signup);
+                }),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              TextButton(
+                child: const Text("Забыли пароль?",
+                    style: TextStyle(fontSize: 14)),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(15)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: const BorderSide(color: Colors.blue)))),
+                onPressed: (() {
+                  context.read<SignInBloc>().add(SignInRemaindPasswordEvent());
+                }),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
