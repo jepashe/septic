@@ -99,5 +99,14 @@ class ApiClient {
     return user;
   }
 
-
+  Future<void> forgetPassword({required String email}) async {
+    final _url = Uri.parse(_baseUrl + 'passwords/reset');
+    Map<String, String> _body = {'email': email};
+    final response = await http.post(_url, body: _body, headers: _headers);
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+  }
 }

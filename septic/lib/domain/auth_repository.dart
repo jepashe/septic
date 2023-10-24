@@ -24,4 +24,10 @@ class AuthenticationRepository {
       {required int user_id, required String token}) async {
     return _septicClient.getUserInfo(user_id: user_id, token: token);
   }
+
+  Future<void> forgetPassword({required String email}) async {
+    return _septicClient.forgetPassword(
+      email: email,
+    );
+  }
 }
