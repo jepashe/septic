@@ -32,6 +32,19 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
+class SignInInputCodeResetPassword extends StatelessWidget {
+  final _codeInput = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [],
+      ),
+    );
+  }
+}
+
 class SignInRemaindPassword extends StatelessWidget {
   SignInRemaindPassword({Key? key}) : super(key: key);
   final _emailInput = TextEditingController();
