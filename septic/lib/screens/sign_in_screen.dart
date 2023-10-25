@@ -34,12 +34,49 @@ class SignInScreen extends StatelessWidget {
 
 class SignInInputCodeResetPassword extends StatelessWidget {
   final _codeInput = TextEditingController();
+
+  SignInInputCodeResetPassword({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [],
+        children: [
+          const Text(
+            'Код подтверждения',
+            style: TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 25),
+          const Text('Для отправки Вам нового пароля введите код подверждения'),
+          const SizedBox(height: 25),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Код подтверждения',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            controller: _codeInput,
+          ),
+          const SizedBox(height: 25),
+          TextButton(
+            child: const Text("Подтвердить", style: TextStyle(fontSize: 14)),
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.all(15)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        side: const BorderSide(color: Colors.blue)))),
+            onPressed: (() {
+              context.read<SignInBloc>().add(
+                  SignInSendForgetPasswordOnEmailEvent(email: _codeInput.text));
+            }),
+          ),
+        ],
       ),
     );
   }
