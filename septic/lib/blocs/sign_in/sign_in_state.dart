@@ -25,3 +25,8 @@ class SignInWaitCodeResetPasswordState extends SignInState {
   @override
   List<Object?> get props => [];
 }
+
+class SignInConfirmCodeState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
