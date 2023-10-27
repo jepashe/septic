@@ -16,6 +16,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         super(SignInInitState()) {
     on<SignInWhithEmailEvent>(_onSignInWhithUsers);
     on<SignInSendForgetPasswordOnEmailEvent>(_onSignInSendForgetPassword);
+    on<SignInConfirmCodeEvent>((event, emit) => emit(SignInConfirmCodeState()));
     on<SignInRemaindPasswordEvent>(
         (event, emit) => emit(SignInRemaindPasswordState()));
   }
