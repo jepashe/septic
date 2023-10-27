@@ -22,7 +22,12 @@ class SignInScreen extends StatelessWidget {
               if (state is SignInRemaindPasswordState) {
                 return SignInRemaindPassword();
               }
-              if (state is SignInWaitCodeResetPasswordState) {}
+              if (state is SignInWaitCodeResetPasswordState) {
+                return SignInInputCodeResetPassword();
+              }
+              if (state is SignInConfirmCodeState) {
+                return SignInConfirmCode();
+              }
               return SignInWhithEmail();
             }),
           ),
@@ -74,6 +79,58 @@ class SignInInputCodeResetPassword extends StatelessWidget {
             onPressed: (() {
               context.read<SignInBloc>().add(
                   SignInSendForgetPasswordOnEmailEvent(email: _codeInput.text));
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SignInConfirmCode extends StatelessWidget {
+  final _emailInput = TextEditingController();
+
+  SignInConfirmCode({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Подтверждение сброса пароля',
+            style: TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 25),
+          const Text('Введите код подверждения сброса пароля из email'),
+          const SizedBox(height: 25),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Код подтверждения',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            controller: _emailInput,
+          ),
+          const SizedBox(height: 25),
+          TextButton(
+            child: const Text("Подтвердить", style: TextStyle(fontSize: 14)),
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.all(15)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        side: const BorderSide(color: Colors.blue)))),
+            onPressed: (() {
+              context.read<SignInBloc>().add(
+                  SignInSendForgetPasswordOnEmailEvent(
+                      email: _emailInput.text));
             }),
           ),
         ],
