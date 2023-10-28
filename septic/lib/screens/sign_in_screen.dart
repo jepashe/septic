@@ -23,7 +23,7 @@ class SignInScreen extends StatelessWidget {
                 return SignInRemaindPassword();
               }
               if (state is SignInWaitCodeResetPasswordState) {
-                return SignInInputCodeResetPassword();
+                return SignInInputCodeResetPassword(email: state.email,);
               }
               if (state is SignInConfirmCodeState) {
                 return SignInConfirmCode();
@@ -38,9 +38,10 @@ class SignInScreen extends StatelessWidget {
 }
 
 class SignInInputCodeResetPassword extends StatelessWidget {
+  SignInInputCodeResetPassword({Key? key, required String email}) : _email = email, super(key: key);
   final _codeInput = TextEditingController();
-
-  SignInInputCodeResetPassword({Key? key}) : super(key: key);
+  final _email;
+  
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -78,7 +79,7 @@ class SignInInputCodeResetPassword extends StatelessWidget {
                         side: const BorderSide(color: Colors.blue)))),
             onPressed: (() {
               context.read<SignInBloc>().add(
-                  SignInSendForgetPasswordOnEmailEvent(email: _codeInput.text));
+                  SignInSendConfirmCodeEvent(email: _email, code: _codeInput.text));
             }),
           ),
         ],
@@ -89,7 +90,6 @@ class SignInInputCodeResetPassword extends StatelessWidget {
 
 class SignInConfirmCode extends StatelessWidget {
   final _emailInput = TextEditingController();
-
   SignInConfirmCode({Key? key}) : super(key: key);
 
   @override
