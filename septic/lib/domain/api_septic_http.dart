@@ -99,7 +99,7 @@ class ApiClient {
     return user;
   }
 
-  Future<void> forgetPassword({required String email}) async {
+  Future<bool> forgetPassword({required String email}) async {
     final _url = Uri.parse(_baseUrl + 'passwords/reset');
     Map<String, String> _body = {'email': email};
     final response = await http.post(_url, body: _body, headers: _headers);
@@ -108,11 +108,13 @@ class ApiClient {
       final error = jsonMessage['error'];
       throw Exception(error);
     }
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    return json['success'];
   }
 
-  Future<bool> sendNewPasswordOnEmail({required String code}) async {
+  Future<bool> sendNewPasswordOnEmail({required String email, required String code}) async {
     final _url = Uri.parse(_baseUrl + 'passwords');
-    Map<String, String> _body = {'email': code};
+    Map<String, String> _body = {'email': email, 'code': code};
     final response = await http.delete(_url, body: _body, headers: _headers);
     if (response.statusCode == 422) {
       final Map<String, dynamic> jsonMessage = jsonDecode(response.body);

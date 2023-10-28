@@ -25,14 +25,14 @@ class AuthenticationRepository {
     return _septicClient.getUserInfo(user_id: user_id, token: token);
   }
 
-  Future<void> forgetPassword({required String email}) async {
+  Future<bool> forgetPassword({required String email}) async {
     return _septicClient.forgetPassword(
       email: email,
     );
   }
 
-  Future<bool> sendNewPasswordOnEmail({required String code}) async {
-    return _septicClient.sendNewPasswordOnEmail(
+  Future<bool> sendNewPasswordOnEmail({required String email, required String code}) async {
+    return _septicClient.sendNewPasswordOnEmail(email: email,
       code: code,
     );
   }
