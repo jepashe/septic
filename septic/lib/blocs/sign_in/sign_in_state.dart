@@ -30,3 +30,8 @@ class SignInConfirmCodeState extends SignInState {
   @override
   List<Object?> get props => [];
 }
+
+class SignInSendNewPasswordState extends SignInState {
+  @override
+  List<Object?> get props => [];
+}
