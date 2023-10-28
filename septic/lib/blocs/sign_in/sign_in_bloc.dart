@@ -16,6 +16,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         super(SignInInitState()) {
     on<SignInWhithEmailEvent>(_onSignInWhithUsers);
     on<SignInSendForgetPasswordOnEmailEvent>(_onSignInSendForgetPassword);
+    on<SignInSendConfirmCodeEvent>(_onSignInSendConfirmCode);
     on<SignInConfirmCodeEvent>((event, emit) => emit(SignInConfirmCodeState()));
     on<SignInRemaindPasswordEvent>(
         (event, emit) => emit(SignInRemaindPasswordState()));
@@ -42,6 +43,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       Emitter<SignInState> emit) async {
     await _authenticationRepository.forgetPassword(email: event.email);
     emit(SignInWaitCodeResetPasswordState());
+  }
+
+  _onSignInSendConfirmCode(SignInSendConfirmCodeEvent event, Emitter<SignInState> emit) async{
+    await _authenticationRepository.sendNewPasswordOnEmail(code: event.code);
+    emit(SignInSendNewPasswordState());
   }
 }
 
