@@ -18,6 +18,7 @@ class SignInSendForgetPasswordOnEmailEvent extends SignInEvent {
 class SignInConfirmCodeEvent extends SignInEvent {}
 
 class SignInSendConfirmCodeEvent extends SignInEvent {
+  String email;
   String code;
-  SignInSendConfirmCodeEvent({required this.code});
+  SignInSendConfirmCodeEvent({required this.email, required this.code});
 }
