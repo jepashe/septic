@@ -22,11 +22,14 @@ class SignInRemaindPasswordState extends SignInState {
 }
 
 class SignInWaitCodeResetPasswordState extends SignInState {
+  String email;
+  SignInWaitCodeResetPasswordState({required this.email});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [email];
 }
 
 class SignInConfirmCodeState extends SignInState {
+  
   @override
   List<Object?> get props => [];
 }
