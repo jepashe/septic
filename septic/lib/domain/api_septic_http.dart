@@ -109,4 +109,17 @@ class ApiClient {
       throw Exception(error);
     }
   }
+
+  Future<bool> sendNewPasswordOnEmail({required String code}) async {
+    final _url = Uri.parse(_baseUrl + 'passwords');
+    Map<String, String> _body = {'email': code};
+    final response = await http.delete(_url, body: _body, headers: _headers);
+    if (response.statusCode == 422) {
+      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+      final error = jsonMessage['error'];
+      throw Exception(error);
+    }
+    final Map<String, dynamic> json = jsonDecode(response.body);
+    return json['success'];
+  }
 }

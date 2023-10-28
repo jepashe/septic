@@ -30,4 +30,10 @@ class AuthenticationRepository {
       email: email,
     );
   }
+
+  Future<bool> sendNewPasswordOnEmail({required String code}) async {
+    return _septicClient.sendNewPasswordOnEmail(
+      code: code,
+    );
+  }
 }
