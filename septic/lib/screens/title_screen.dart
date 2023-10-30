@@ -3,15 +3,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/core/app_bar.dart';
 import 'package:septic/custom_widgets/septic_paint.dart';
+import 'package:septic/domain/septic_repository.dart';
+import 'package:septic/entity/user.dart';
 
 class TitleScreen extends StatelessWidget {
   const TitleScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context)!.settings.arguments;
+    if (user != null) {
+      user as User;
+      BlocProvider<SepticBloc>(
+          create: (context) =>
+              SepticBloc(septicRepository: SepticRepository(), user: user));
+      BlocProvider.of<SepticBloc>(context).add(SepticCheckUserDeviceEvent());
+    }
     return Scaffold(
-      appBar: UIApp.appBarUI,
-      body: const SepticWidget(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+          ),
+        ),
+      ),
     );
   }
 }
