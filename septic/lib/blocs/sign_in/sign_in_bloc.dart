@@ -39,18 +39,24 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     //emit(SignInInitState());
   }
 
+// Восстановление забытого пароля
   _onSignInSendForgetPassword(SignInSendForgetPasswordOnEmailEvent event,
       Emitter<SignInState> emit) async {
-    final isSuccess = await _authenticationRepository.forgetPassword(email: event.email);
-    if(isSuccess) {
+    final isSuccess =
+        await _authenticationRepository.forgetPassword(email: event.email);
+    if (isSuccess) {
       emit(SignInWaitCodeResetPasswordState(email: event.email));
-    } 
-    
+    }
   }
 
-  _onSignInSendConfirmCode(SignInSendConfirmCodeEvent event, Emitter<SignInState> emit) async{
-    final isSuccess = await _authenticationRepository.sendNewPasswordOnEmail(email: event.email, code: event.code);
-    emit(SignInSendNewPasswordState());
+// Код подтверждения сброса пароля
+  _onSignInSendConfirmCode(
+      SignInSendConfirmCodeEvent event, Emitter<SignInState> emit) async {
+    final isSuccess = await _authenticationRepository.sendNewPasswordOnEmail(
+        email: event.email, code: event.code);
+    if (isSuccess) {
+      emit(SignInSendNewPasswordState());
+    }
   }
 }
 
