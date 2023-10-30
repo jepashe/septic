@@ -35,10 +35,6 @@ class MyApp extends StatelessWidget {
               create: (context) => SignInBloc(
                   authenticationRepository: AuthenticationRepository(),
                   storeRepository: StoreRepository(store: store))),
-          BlocProvider<SepticBloc>(
-              create: (context) => SepticBloc(
-                  septicRepository: SepticRepository(),
-                  storeRepository: StoreRepository(store: store))),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
