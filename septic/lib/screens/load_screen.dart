@@ -20,9 +20,7 @@ class LoadingScreen extends StatelessWidget {
                 () => Navigator.pushNamed(
                     context, MainNavigationRouteNames.signup,
                     arguments: state.user));
-          } else {
-            
-          }
+          } else {}
         }
         if (state is LoadingAppErrorState) {
           const snackBar = SnackBar(content: Text('state.error'));
@@ -33,17 +31,42 @@ class LoadingScreen extends StatelessWidget {
         if (state is LoadingAppWithUsersState) {
           return Scaffold(
             body: Center(
-              child: DropdownButton<dynamic>(
-                items: state.usersItems,
-                onChanged: (value) {
-                  context
-                      .read<LoadingAppBloc>()
-                      .add(LoadingAppWhithCurrentUser(user: value));
-                },
-                hint: const Text(
-                  'Выберите пользователя',
-                  style: TextStyle(color: Colors.blueAccent),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton<dynamic>(
+                    items: state.usersItems,
+                    onChanged: (value) {
+                      context
+                          .read<LoadingAppBloc>()
+                          .add(LoadingAppWhithCurrentUser(user: value));
+                    },
+                    hint: const Text(
+                      'Выберите пользователя',
+                      style: TextStyle(color: Colors.blueAccent),
+                    ),
+                  ),
+                  const Text('или'),
+                  TextButton(
+                    child: const Text("Регистрация нового пользователя",
+                        style: TextStyle(fontSize: 14)),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.all(15)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side:
+                                        const BorderSide(color: Colors.blue)))),
+                    onPressed: () => Navigator.pushNamed(
+                        context, MainNavigationRouteNames.signup),
+                  ),
+                ],
               ),
             ),
           );
