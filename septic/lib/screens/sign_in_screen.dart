@@ -16,14 +16,17 @@ class SignInScreen extends StatelessWidget {
                 listener: (context, state) {
               if (state is SignInSuccessfullState) {
                 Navigator.pushNamed(
-                    context, MainNavigationRouteNames.titleScreen);
+                    context, MainNavigationRouteNames.titleScreen,
+                    arguments: state.user);
               }
             }, builder: (context, state) {
               if (state is SignInRemaindPasswordState) {
                 return SignInRemaindPassword();
               }
               if (state is SignInWaitCodeResetPasswordState) {
-                return SignInInputCodeResetPassword(email: state.email,);
+                return SignInInputCodeResetPassword(
+                  email: state.email,
+                );
               }
               if (state is SignInConfirmCodeState) {
                 return SignInConfirmCode();
@@ -38,10 +41,12 @@ class SignInScreen extends StatelessWidget {
 }
 
 class SignInInputCodeResetPassword extends StatelessWidget {
-  SignInInputCodeResetPassword({Key? key, required String email}) : _email = email, super(key: key);
+  SignInInputCodeResetPassword({Key? key, required String email})
+      : _email = email,
+        super(key: key);
   final _codeInput = TextEditingController();
   final _email;
-  
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -78,8 +83,8 @@ class SignInInputCodeResetPassword extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         side: const BorderSide(color: Colors.blue)))),
             onPressed: (() {
-              context.read<SignInBloc>().add(
-                  SignInSendConfirmCodeEvent(email: _email, code: _codeInput.text));
+              context.read<SignInBloc>().add(SignInSendConfirmCodeEvent(
+                  email: _email, code: _codeInput.text));
             }),
           ),
         ],

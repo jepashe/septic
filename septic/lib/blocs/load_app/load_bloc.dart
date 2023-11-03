@@ -10,7 +10,8 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
   LoadingAppBloc({required StoreRepository storeRepository})
       : _storeRepository = storeRepository,
         super(LoadingAppStartState()) {
-    on<LoadingAppStartEvent>(_onLoadingAppStart); on<LoadingAppWhithCurrentUser>(_onLoadingAppWhithCurrentUser);
+    on<LoadingAppStartEvent>(_onLoadingAppStart);
+    on<LoadingAppWhithCurrentUser>(_onLoadingAppWhithCurrentUser);
   }
 
   final StoreRepository _storeRepository;
@@ -51,26 +52,28 @@ class LoadingAppBloc extends Bloc<LoadingAppEvent, LoadingAppState> {
         final users = _storeRepository.getAllUsers();
         if (users.length > 1) {
           List<DropdownMenuItem> userItems = [];
-          for(var user in users){
-           final item = DropdownMenuItem(child: Text(user.name), value: user,);
-           userItems.add(item);   
+          for (var user in users) {
+            final item = DropdownMenuItem(
+              child: Text(user.name),
+              value: user,
+            );
+            userItems.add(item);
           }
           emit(LoadingAppWithUsersState(usersItems: userItems));
         } else {
           emit(LoadingAppWhithCurrentUserState(user: users.first));
         }
-
       }
     } catch (e) {
       emit(LoadingAppErrorState());
     }
   }
-  _onLoadingAppWhithCurrentUser(LoadingAppWhithCurrentUser event, Emitter<LoadingAppState> emit){
-    emit(LoadingAppWhithCurrentUserState(user: event.user));
 
+  _onLoadingAppWhithCurrentUser(
+      LoadingAppWhithCurrentUser event, Emitter<LoadingAppState> emit) {
+    emit(LoadingAppWhithCurrentUserState(user: event.user));
   }
 
-  
   /*
   @override
   void onEvent(LoadingAppEvent event) {

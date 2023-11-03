@@ -11,13 +11,19 @@ class SepticBloc extends Bloc<SepticEvent, SepticState> {
       : _septicRepository = septicRepository,
         _currentUser = user,
         super(SepticInitState()) {
-    on<SepticInitEvent>(_onSepticInit);
+    on<SepticCheckUserDeviceEvent>(_onCheckUserDeviceEvent);
+    on<SepticAddInfoAboutNewDeviceEvent>(
+        ((event, emit) => emit(SepticAddInfoAboutNewDeviceState())));
   }
 
   final SepticRepository _septicRepository;
   final User _currentUser;
 
-  _onSepticInit(SepticInitEvent event, Emitter<SepticState> emit) async {
-    _septicRepository.getUserDevices();
+  _onCheckUserDeviceEvent(
+      SepticCheckUserDeviceEvent event, Emitter<SepticState> emit) async {
+    final septic = await _septicRepository.getUserDevices(user: _currentUser);
+    if (septic == null) {
+      emit(SepticNotState());
+    }
   }
 }

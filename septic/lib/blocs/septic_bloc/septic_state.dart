@@ -11,3 +11,13 @@ class SepticNotState extends SepticState {
   @override
   List<Object?> get props => [];
 }
+
+class SepticAddInfoAboutNewDeviceState extends SepticState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SepticNewDeviceSuccessState extends SepticState {
+  @override
+  List<Object?> get props => [];
+}

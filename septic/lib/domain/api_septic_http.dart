@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:septic/entity/septic.dart';
 import 'package:septic/entity/user.dart';
 
 class ApiClient {
@@ -83,20 +84,48 @@ class ApiClient {
     return user;
   }
 
-  Future<User> getUserDevices(
-      {required int user_id, required String token}) async {
-    final _url = Uri.parse(_baseUrl + 'users/$user_id');
-    var _headerWhithAuth = _headers;
-    _headerWhithAuth['Authorization'] = 'Bearer $token';
-    final response = await http.get(_url, headers: _headerWhithAuth);
-    if (response.statusCode == 422) {
-      final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
-      final error = jsonMessage['error'];
-      throw Exception(error);
+// Получить все привязанные устройства пользователя
+
+  Future<List<Septic>?> getUserDevices({required User user}) async {
+    final _url = Uri.parse(_baseUrl + 'devices');
+    final token = user.token;
+    if (token != null) {
+      var _headerWhithAuth = _headers;
+      _headerWhithAuth['Authorization'] = 'Bearer $token';
+      final response = await http.get(_url, headers: _headerWhithAuth);
+      if (response.statusCode == 422) {
+        final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+        final error = jsonMessage['error'];
+        throw Exception(error);
+      }
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final List<dynamic> devices = json['devices'];
+      if (devices.isEmpty) {
+        return null;
+      }
+      List<Septic> septics = [];
+      for (var device in devices) {
+        final septic = Septic.fromJson(device);
+        septics.add(septic);
+      }
+      return septics;
     }
-    final Map<String, dynamic> json = jsonDecode(response.body);
-    final User user = User.fromJson(json['user']);
-    return user;
+    return null;
+  }
+
+  Future<bool> addSeptic(
+      {required String number,
+      required String address,
+      required String phone,
+      required String contact,
+      required double volume,
+      required double radius,
+      required double height,
+      required double shift,
+      required double threshold,
+      required User user}) async {
+    final _url = Uri.parse(_baseUrl + 'users/${user.user_id}/devices');
+    return true;
   }
 
   Future<bool> forgetPassword({required String email}) async {
@@ -112,7 +141,8 @@ class ApiClient {
     return json['success'];
   }
 
-  Future<bool> sendNewPasswordOnEmail({required String email, required String code}) async {
+  Future<bool> sendNewPasswordOnEmail(
+      {required String email, required String code}) async {
     final _url = Uri.parse(_baseUrl + 'passwords');
     Map<String, String> _body = {'email': email, 'code': code};
     final response = await http.delete(_url, body: _body, headers: _headers);
