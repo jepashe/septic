@@ -11,13 +11,13 @@ class Septic {
   @HiveField(2)
   final String contact;
   @HiveField(3)
-  final String volume;
+  final double volume;
   @HiveField(4)
-  final String height;
+  final double height;
   @HiveField(5)
-  final String shift;
+  final double shift;
   @HiveField(6)
-  final String threshold;
+  final double threshold;
   @HiveField(7)
   final int user_id;
   @HiveField(8)
@@ -42,10 +42,10 @@ class Septic {
         address: json['address'] as String,
         phone: json['phone'] as String,
         contact: json['contact'] as String,
-        volume: json['volume'] as String,
-        height: json['height'] as String,
-        shift: json['shift'] as String,
-        threshold: json['threshold'] as String,
+        volume: json['volume'] as double,
+        height: json['height'] as double,
+        shift: json['shift'] as double,
+        threshold: json['threshold'] as double,
         user_id: json['user_id'] as int,
         api_key: json['api_key'] as String,
         device_id: json['device_id'] as int);

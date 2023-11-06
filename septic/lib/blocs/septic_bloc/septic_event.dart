@@ -13,11 +13,11 @@ class SepticSendInfoAboutNewDeviceEvent extends SepticEvent {
   String address;
   String phone;
   String contact;
-  double volume;
-  double radius;
-  double height;
-  double shift;
-  double threshold;
+  String volume;
+  String radius;
+  String height;
+  String shift;
+  String threshold;
   SepticSendInfoAboutNewDeviceEvent({
     required this.number,
     required this.address,

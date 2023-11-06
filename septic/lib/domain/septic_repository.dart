@@ -7,7 +7,7 @@ class SepticRepository {
       : _septicClient = septicApi ?? ApiClient();
   final ApiClient _septicClient;
 
-  Future<List<Septic>?> getUserDevices({required User user}) async {
+  Future<List<int>?> getUserDevices({required User user}) async {
     return _septicClient.getUserDevices(user: user);
   }
 
@@ -16,11 +16,11 @@ class SepticRepository {
       required String address,
       required String phone,
       required String contact,
-      required double volume,
-      required double radius,
-      required double height,
-      required double shift,
-      required double threshold,
+      required String volume,
+      required String radius,
+      required String height,
+      required String shift,
+      required String threshold,
       required User user}) async {
     return _septicClient.addSeptic(
       address: address,

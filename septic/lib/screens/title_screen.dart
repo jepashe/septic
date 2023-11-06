@@ -47,7 +47,11 @@ class SepticScreen extends StatelessWidget {
                 }
                 return const Text('gdfgd');
               },
-              listener: (context, state) {},
+              listener: (context, state) {
+                if(state is SepticAddNewDeviceSucsessState){
+                  BlocProvider.of<SepticBloc>(context).add(SepticCheckUserDeviceEvent());
+                }
+              },
             ),
           ),
         ),
@@ -57,6 +61,7 @@ class SepticScreen extends StatelessWidget {
 }
 
 class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
+ 
   const SepticAddInfoAboutNewDeviceWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -208,11 +213,11 @@ class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
                   address: _address.text,
                   phone: _phone.text,
                   contact: _contact.text,
-                  volume: (_volume.text) as double,
-                  radius: (_radius.text) as double,
-                  height: (_height.text) as double,
-                  shift: (_shift.text) as double,
-                  threshold: (_threshold.text) as double,
+                  volume: _volume.text,
+                  radius: _radius.text,
+                  height: _height.text,
+                  shift: _shift.text,
+                  threshold: _threshold.text,
                 ));
               })),
           const SizedBox(
