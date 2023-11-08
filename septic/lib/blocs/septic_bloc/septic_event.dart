@@ -30,3 +30,10 @@ class SepticSendInfoAboutNewDeviceEvent extends SepticEvent {
     required this.threshold,
   });
 }
+
+class SepticGetDevisesDataEvent extends SepticEvent {
+  List<int> septics;
+  SepticGetDevisesDataEvent({
+    required this.septics,
+  });
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
+import 'package:septic/custom_widgets/septic_paint.dart';
 import 'package:septic/domain/septic_repository.dart';
 import 'package:septic/entity/user.dart';
 
@@ -16,7 +17,7 @@ class TitleScreen extends StatelessWidget {
     return BlocProvider<SepticBloc>(
       create: (context) =>
           SepticBloc(septicRepository: SepticRepository(), user: currentUser),
-      child: SepticScreen(),
+      child: const SepticScreen(),
     );
   }
 }
@@ -35,21 +36,34 @@ class SepticScreen extends StatelessWidget {
             child: BlocConsumer<SepticBloc, SepticState>(
               builder: (context, state) {
                 if (state is SepticNotState) {
-                  return TextButton(
-                      onPressed: () {
-                        BlocProvider.of<SepticBloc>(context)
-                            .add(SepticAddInfoAboutNewDeviceEvent());
-                      },
-                      child: const Text('Добавить септик'));
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              BlocProvider.of<SepticBloc>(context)
+                                  .add(SepticAddInfoAboutNewDeviceEvent());
+                            },
+                            child: const Text('Добавить септик')),
+                      ],
+                    ),
+                  );
                 }
                 if (state is SepticAddInfoAboutNewDeviceState) {
                   return const SepticAddInfoAboutNewDeviceWidget();
                 }
+                if (state is SepticListDeviceState) {
+                  return ListSeptics(
+                    septics: state.septics,
+                  );
+                }
                 return const Text('gdfgd');
               },
               listener: (context, state) {
-                if(state is SepticAddNewDeviceSucsessState){
-                  BlocProvider.of<SepticBloc>(context).add(SepticCheckUserDeviceEvent());
+                if (state is SepticAddNewDeviceSucsessState) {
+                  BlocProvider.of<SepticBloc>(context)
+                      .add(SepticCheckUserDeviceEvent());
                 }
               },
             ),
@@ -61,7 +75,6 @@ class SepticScreen extends StatelessWidget {
 }
 
 class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
- 
   const SepticAddInfoAboutNewDeviceWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -229,19 +242,31 @@ class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
   }
 }
 
+class ListSeptics extends StatelessWidget {
+  const ListSeptics({Key? key, required this.septics}) : super(key: key);
+  final List<int> septics;
 
-/*
-return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(children: const [
-            SizedBox(height: 10),
-            SepticPaint(
-              firstAlarmLevel: 90,
-              secondAlarmLevel: 80,
-              septicLevel: 70,
-            ),
-          ]),
-        ),
-      );
-*/
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          const SepticPaint(
+            firstAlarmLevel: 90,
+            secondAlarmLevel: 80,
+            septicLevel: 70,
+          ),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              BlocProvider.of<SepticBloc>(context)
+                  .add(SepticGetDevisesDataEvent(septics: septics));
+            },
+            child: const Text('Проверить септик'),
+          ),
+        ],
+      ),
+    );
+  }
+}

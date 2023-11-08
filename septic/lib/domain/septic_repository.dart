@@ -1,5 +1,5 @@
 import 'package:septic/domain/api_septic_http.dart';
-import 'package:septic/entity/septic.dart';
+
 import 'package:septic/entity/user.dart';
 
 class SepticRepository {
@@ -34,5 +34,10 @@ class SepticRepository {
       volume: volume,
       user: user,
     );
+  }
+
+  Future<void> getDevicesData(
+      {required List<int> septics, required User user}) {
+    return _septicClient.getDevicesData(septics: septics, user: user);
   }
 }

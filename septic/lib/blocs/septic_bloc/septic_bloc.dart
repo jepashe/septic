@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:septic/domain/septic_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:septic/entity/septic.dart';
+
 import 'package:septic/entity/user.dart';
 
 part 'septic_event.dart';
@@ -16,30 +16,43 @@ class SepticBloc extends Bloc<SepticEvent, SepticState> {
     on<SepticAddInfoAboutNewDeviceEvent>(
         ((event, emit) => emit(SepticAddInfoAboutNewDeviceState())));
     on<SepticSendInfoAboutNewDeviceEvent>(_onAddInfoAboutNewDevice);
-
+    on<SepticGetDevisesDataEvent>(_onGetDevisesData);
   }
 
   final SepticRepository _septicRepository;
   final User _currentUser;
 
-
+  _onGetDevisesData(
+      SepticGetDevisesDataEvent event, Emitter<SepticState> emit) async {
+    await _septicRepository.getDevicesData(
+        septics: event.septics, user: _currentUser);
+  }
 
   _onCheckUserDevice(
       SepticCheckUserDeviceEvent event, Emitter<SepticState> emit) async {
-    final septics =  await _septicRepository.getUserDevices(user: _currentUser);
+    final septics = await _septicRepository.getUserDevices(user: _currentUser);
     if (septics == null) {
       emit(SepticNotState());
     } else {
       emit(SepticListDeviceState(septics: septics));
     }
-    
-    
   }
 
-  _onAddInfoAboutNewDevice(SepticSendInfoAboutNewDeviceEvent event, Emitter<SepticState> emit ) async {
-    final isSuccess = await _septicRepository.addSeptic(number: event.number, address: event.address, phone: event.phone, contact: event.contact, volume: event.volume, radius: event.radius, height: event.height, shift: event.shift, threshold: event.threshold, user: _currentUser);
-    if(isSuccess) {
-     emit(SepticAddNewDeviceSucsessState());
+  _onAddInfoAboutNewDevice(SepticSendInfoAboutNewDeviceEvent event,
+      Emitter<SepticState> emit) async {
+    final isSuccess = await _septicRepository.addSeptic(
+        number: event.number,
+        address: event.address,
+        phone: event.phone,
+        contact: event.contact,
+        volume: event.volume,
+        radius: event.radius,
+        height: event.height,
+        shift: event.shift,
+        threshold: event.threshold,
+        user: _currentUser);
+    if (isSuccess) {
+      emit(SepticAddNewDeviceSucsessState());
     }
   }
 }

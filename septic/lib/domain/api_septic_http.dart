@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:septic/entity/septic.dart';
 import 'package:septic/entity/user.dart';
+import 'package:intl/intl.dart';
 
 class ApiClient {
   final _baseUrl = 'https://app.xn--74-6kcaymg3bmueas.xn--p1ai/api/v1/';
@@ -113,6 +114,28 @@ class ApiClient {
     return null;
   }
 
+  Future<void> getDevicesData(
+      {required List<int> septics, required User user}) async {
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    String filter =
+        'data?filter[device_id][]=${septics[0]}&filter[from]=$formattedDate&filter[to]=$formattedDate';
+    final _url = Uri.parse(_baseUrl + filter);
+    final token = user.token;
+    if (token != null) {
+      var _headerWhithAuth = _headers;
+      _headerWhithAuth['Authorization'] = 'Bearer $token';
+      final response = await http.get(_url, headers: _headerWhithAuth);
+      if (response.statusCode == 422) {
+        final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
+        final error = jsonMessage['error'];
+        throw Exception(error);
+      }
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      print(json);
+    }
+  }
+
   Future<bool> addSeptic(
       {required String number,
       required String address,
@@ -129,8 +152,19 @@ class ApiClient {
     if (token != null) {
       var _headerWhithAuth = _headers;
       _headerWhithAuth['Authorization'] = 'Bearer $token';
-      Map<String, dynamic> _body = {'number': number, 'address': address, 'phone': phone, 'contact': contact, 'volume': volume, 'radius': radius, 'height': height, 'shift': shift, 'threshold': threshold};
-      final response = await http.post(_url, headers: _headerWhithAuth, body: _body);
+      Map<String, dynamic> _body = {
+        'number': number,
+        'address': address,
+        'phone': phone,
+        'contact': contact,
+        'volume': volume,
+        'radius': radius,
+        'height': height,
+        'shift': shift,
+        'threshold': threshold
+      };
+      final response =
+          await http.post(_url, headers: _headerWhithAuth, body: _body);
       if (response.statusCode == 422) {
         final Map<String, dynamic> jsonMessage = jsonDecode(response.body);
         final error = jsonMessage['error'];

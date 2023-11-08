@@ -24,7 +24,6 @@ class SepticAddNewDeviceSucsessState extends SepticState {
   List<Object?> get props => [];
 }
 
-
 // Список септиков привязанных к пользователю
 class SepticListDeviceState extends SepticState {
   SepticListDeviceState({required this.septics});
