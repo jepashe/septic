@@ -87,7 +87,7 @@ class ApiClient {
 
 // Получить все привязанные устройства пользователя
 
-  Future<List<int>?> getUserDevices({required User user}) async {
+  Future<List<dynamic>?> getUserDevices({required User user}) async {
     final _url = Uri.parse(_baseUrl + 'devices');
     final token = user.token;
     if (token != null) {
@@ -104,12 +104,14 @@ class ApiClient {
       if (devices.isEmpty) {
         return null;
       }
+      /*
       List<int> septics = [];
       for (var device in devices) {
         final device_id = device['device_id'];
         septics.add(device_id);
       }
-      return septics;
+      return septics;*/
+      return devices;
     }
     return null;
   }

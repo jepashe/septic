@@ -20,7 +20,13 @@ class LoadingScreen extends StatelessWidget {
                 () => Navigator.pushNamed(
                     context, MainNavigationRouteNames.signup,
                     arguments: state.user));
-          } else {}
+          } else {
+            Future.delayed(
+                const Duration(seconds: 2),
+                () => Navigator.pushNamed(
+                    context, MainNavigationRouteNames.signin,
+                    arguments: state.user));
+          }
         }
         if (state is LoadingAppErrorState) {
           const snackBar = SnackBar(content: Text('state.error'));

@@ -4,6 +4,7 @@ import 'package:septic/blocs/septic_bloc/septic_bloc.dart';
 import 'package:septic/custom_widgets/septic_paint.dart';
 import 'package:septic/domain/septic_repository.dart';
 import 'package:septic/entity/user.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class TitleScreen extends StatelessWidget {
   const TitleScreen({Key? key}) : super(key: key);
@@ -54,9 +55,7 @@ class SepticScreen extends StatelessWidget {
                   return const SepticAddInfoAboutNewDeviceWidget();
                 }
                 if (state is SepticListDeviceState) {
-                  return ListSeptics(
-                    septics: state.septics,
-                  );
+                  return ListSepticsNew();
                 }
                 return const Text('gdfgd');
               },
@@ -244,29 +243,88 @@ class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
 
 class ListSeptics extends StatelessWidget {
   const ListSeptics({Key? key, required this.septics}) : super(key: key);
-  final List<int> septics;
+  final List<dynamic> septics;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          const SepticPaint(
-            firstAlarmLevel: 90,
-            secondAlarmLevel: 80,
-            septicLevel: 70,
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              BlocProvider.of<SepticBloc>(context)
-                  .add(SepticGetDevisesDataEvent(septics: septics));
-            },
-            child: const Text('Проверить септик'),
-          ),
-        ],
-      ),
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: const ScrollPhysics(),
+      itemCount: septics.length,
+      itemBuilder: ((context, index) {
+        final data = septics[index]['last_data'];
+        if (data == null) {
+          return Column(
+            children: [
+              Text(septics[index]["name"]),
+              const SepticPaint(
+                firstAlarmLevel: 0,
+                secondAlarmLevel: 0,
+                septicLevel: 0,
+              ),
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              Text(septics[index]["name"]),
+              SepticPaint(
+                firstAlarmLevel: 0,
+                secondAlarmLevel: 0,
+                septicLevel: data['percent'] as double,
+              ),
+            ],
+          );
+        }
+      }),
     );
+  }
+}
+
+class ListSepticsNew extends StatefulWidget {
+  @override
+  _ListSepticsNewState createState() => _ListSepticsNewState();
+}
+
+class _ListSepticsNewState extends State<ListSepticsNew> {
+  final controller = PageController();
+
+  final int count = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _heidth = MediaQuery.of(context).size.height;
+
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 240,
+            child: PageView.builder(
+              controller: controller,
+              itemBuilder: (_, index) {
+                return Container(
+                  height: 200,
+                  color: Colors.amber,
+                  child: Text('$index'),
+                );
+              },
+              itemCount: count,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SmoothPageIndicator(
+            controller: controller,
+            count: count,
+            effect: const WormEffect(
+              dotHeight: 16,
+              dotWidth: 16,
+              type: WormType.thinUnderground,
+            ),
+          ),
+        ]);
   }
 }

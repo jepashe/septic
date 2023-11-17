@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SepticPaint extends StatefulWidget {
-  final int septicLevel;
+  final double septicLevel;
   final int firstAlarmLevel;
   final int secondAlarmLevel;
 
@@ -34,7 +34,7 @@ class SepticPaintState extends State<SepticPaint> {
 }
 
 class SepticCuston extends CustomPainter {
-  final int septicLevel;
+  final double septicLevel;
   final int firstAlarmLevel;
   final int secondAlarmLevel;
 

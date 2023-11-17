@@ -7,7 +7,7 @@ class SepticRepository {
       : _septicClient = septicApi ?? ApiClient();
   final ApiClient _septicClient;
 
-  Future<List<int>?> getUserDevices({required User user}) async {
+  Future<List<dynamic>?> getUserDevices({required User user}) async {
     return _septicClient.getUserDevices(user: user);
   }
 
