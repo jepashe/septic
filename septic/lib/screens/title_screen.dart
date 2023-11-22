@@ -244,15 +244,16 @@ class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
 class ListSeptics extends StatefulWidget {
   const ListSeptics({Key? key, required this.septics}) : super(key: key);
   final List<dynamic> septics;
-
   @override
   ListSepticsState createState() => ListSepticsState();
 }
 
 class ListSepticsState extends State<ListSeptics> {
-  final _pageController = PageController();
+    final _pageController = PageController();
   @override
+  
   Widget build(BuildContext context) {
+    print(widget.septics.length);
     return Container(
       child: Column(children: [
         Expanded(child: Container(padding: const EdgeInsets.all(10.0), child: Container(color: Colors.blue, child: PageView.builder(controller: _pageController, itemCount: widget.septics.length, itemBuilder: ((context, index) {

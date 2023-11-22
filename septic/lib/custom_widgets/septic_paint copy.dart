@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SepticPaint extends StatelessWidget {
-
+class SepticPaint extends StatefulWidget {
   final double septicLevel;
   final int firstAlarmLevel;
   final int secondAlarmLevel;
@@ -13,11 +12,23 @@ class SepticPaint extends StatelessWidget {
       required this.secondAlarmLevel})
       : super(key: key);
 
-  
+  @override
+  SepticPaintState createState() => SepticPaintState();
+}
+
+class SepticPaintState extends State<SepticPaint> {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: SepticCuston(firstAlarmLevel: firstAlarmLevel, secondAlarmLevel: secondAlarmLevel, septicLevel: septicLevel),
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height * 0.7;
+    return Center(
+      child: CustomPaint(
+        painter: SepticCuston(
+            firstAlarmLevel: widget.firstAlarmLevel,
+            secondAlarmLevel: widget.secondAlarmLevel,
+            septicLevel: widget.septicLevel),
+        size: Size(width, height),
+      ),
     );
   }
 }
@@ -34,7 +45,6 @@ class SepticCuston extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print(size);
     var paintWater = Paint()
       ..color = Colors.blueAccent
       ..style = PaintingStyle.fill;
