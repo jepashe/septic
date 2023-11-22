@@ -31,7 +31,7 @@ class SepticScreen extends StatelessWidget {
     BlocProvider.of<SepticBloc>(context).add(SepticCheckUserDeviceEvent());
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: BlocConsumer<SepticBloc, SepticState>(
@@ -55,7 +55,7 @@ class SepticScreen extends StatelessWidget {
                   return const SepticAddInfoAboutNewDeviceWidget();
                 }
                 if (state is SepticListDeviceState) {
-                  return ListSepticsNew();
+                  return ListSeptics(septics: [state.septics],);
                 }
                 return const Text('gdfgd');
               },
@@ -68,7 +68,7 @@ class SepticScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+
     );
   }
 }
@@ -241,90 +241,25 @@ class SepticAddInfoAboutNewDeviceWidget extends StatelessWidget {
   }
 }
 
-class ListSeptics extends StatelessWidget {
+class ListSeptics extends StatefulWidget {
   const ListSeptics({Key? key, required this.septics}) : super(key: key);
   final List<dynamic> septics;
 
   @override
+  ListSepticsState createState() => ListSepticsState();
+}
+
+class ListSepticsState extends State<ListSeptics> {
+  final _pageController = PageController();
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      itemCount: septics.length,
-      itemBuilder: ((context, index) {
-        final data = septics[index]['last_data'];
-        if (data == null) {
-          return Column(
-            children: [
-              Text(septics[index]["name"]),
-              const SepticPaint(
-                firstAlarmLevel: 0,
-                secondAlarmLevel: 0,
-                septicLevel: 0,
-              ),
-            ],
-          );
-        } else {
-          return Column(
-            children: [
-              Text(septics[index]["name"]),
-              SepticPaint(
-                firstAlarmLevel: 0,
-                secondAlarmLevel: 0,
-                septicLevel: data['percent'] as double,
-              ),
-            ],
-          );
-        }
-      }),
+    return Container(
+      child: Column(children: [
+        Expanded(child: Container(padding: const EdgeInsets.all(10.0), child: Container(color: Colors.blue, child: PageView.builder(controller: _pageController, itemCount: widget.septics.length, itemBuilder: ((context, index) {
+          return Container();
+        }),),)),),
+        SmoothPageIndicator(controller: _pageController, count: widget.septics.length),
+      ],),
     );
-  }
-}
-
-class ListSepticsNew extends StatefulWidget {
-  @override
-  _ListSepticsNewState createState() => _ListSepticsNewState();
-}
-
-class _ListSepticsNewState extends State<ListSepticsNew> {
-  final controller = PageController();
-
-  final int count = 4;
-
-  @override
-  Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _heidth = MediaQuery.of(context).size.height;
-
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 240,
-            child: PageView.builder(
-              controller: controller,
-              itemBuilder: (_, index) {
-                return Container(
-                  height: 200,
-                  color: Colors.amber,
-                  child: Text('$index'),
-                );
-              },
-              itemCount: count,
-            ),
-          ),
-          const SizedBox(height: 16),
-          SmoothPageIndicator(
-            controller: controller,
-            count: count,
-            effect: const WormEffect(
-              dotHeight: 16,
-              dotWidth: 16,
-              type: WormType.thinUnderground,
-            ),
-          ),
-        ]);
   }
 }
