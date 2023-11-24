@@ -31,44 +31,44 @@ class SepticScreen extends StatelessWidget {
     BlocProvider.of<SepticBloc>(context).add(SepticCheckUserDeviceEvent());
     return Scaffold(
       body: SafeArea(
-        
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: BlocConsumer<SepticBloc, SepticState>(
-              builder: (context, state) {
-                if (state is SepticNotState) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              BlocProvider.of<SepticBloc>(context)
-                                  .add(SepticAddInfoAboutNewDeviceEvent());
-                            },
-                            child: const Text('Добавить септик')),
-                      ],
-                    ),
-                  );
-                }
-                if (state is SepticAddInfoAboutNewDeviceState) {
-                  return const SepticAddInfoAboutNewDeviceWidget();
-                }
-                if (state is SepticListDeviceState) {
-                  return ListSeptics(septics: [state.septics],);
-                }
-                return const Text('gdfgd');
-              },
-              listener: (context, state) {
-                if (state is SepticAddNewDeviceSucsessState) {
-                  BlocProvider.of<SepticBloc>(context)
-                      .add(SepticCheckUserDeviceEvent());
-                }
-              },
-            ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: BlocConsumer<SepticBloc, SepticState>(
+            builder: (context, state) {
+              if (state is SepticNotState) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            BlocProvider.of<SepticBloc>(context)
+                                .add(SepticAddInfoAboutNewDeviceEvent());
+                          },
+                          child: const Text('Добавить септик')),
+                    ],
+                  ),
+                );
+              }
+              if (state is SepticAddInfoAboutNewDeviceState) {
+                return const SepticAddInfoAboutNewDeviceWidget();
+              }
+              if (state is SepticListDeviceState) {
+                return ListSeptics(
+                  septics: state.septics,
+                );
+              }
+              return const Text('gdfgd');
+            },
+            listener: (context, state) {
+              if (state is SepticAddNewDeviceSucsessState) {
+                BlocProvider.of<SepticBloc>(context)
+                    .add(SepticCheckUserDeviceEvent());
+              }
+            },
           ),
         ),
-
+      ),
     );
   }
 }
@@ -249,18 +249,96 @@ class ListSeptics extends StatefulWidget {
 }
 
 class ListSepticsState extends State<ListSeptics> {
-    final _pageController = PageController();
+  final _pageController = PageController();
   @override
-  
   Widget build(BuildContext context) {
-    print(widget.septics.length);
+    final septics = widget.septics;
     return Container(
-      child: Column(children: [
-        Expanded(child: Container(padding: const EdgeInsets.all(10.0), child: Container(color: Colors.blue, child: PageView.builder(controller: _pageController, itemCount: widget.septics.length, itemBuilder: ((context, index) {
-          return Container();
-        }),),)),),
-        SmoothPageIndicator(controller: _pageController, count: widget.septics.length),
-      ],),
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+                child: Container(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.septics.length,
+                itemBuilder: ((context, index) {
+                  if (septics[index]['last_data'] != null) {
+                    return Container(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Text('${septics[index]['name']}'),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(15.0),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade300,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      blurRadius: 5,
+                                      spreadRadius: 3,
+                                      blurStyle: BlurStyle.normal,
+                                      offset: const Offset(5, 5)),
+                                ],
+                              ),
+                              width: double.infinity,
+                              child: SepticPaint(
+                                  septicLevel: septics[index]['last_data']
+                                      ['percent'],
+                                  firstAlarmLevel: 0,
+                                  secondAlarmLevel: 0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  {
+                    return Container(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Text('${septics[index]['name']}'),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(15.0),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade300,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      blurRadius: 5,
+                                      spreadRadius: 3,
+                                      blurStyle: BlurStyle.normal,
+                                      offset: const Offset(5, 5)),
+                                ],
+                              ),
+                              width: double.infinity,
+                              child: const Center(
+                                  child: Text('Данные не приходят')),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }),
+              ),
+            )),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: SmoothPageIndicator(
+                controller: _pageController, count: widget.septics.length),
+          ),
+        ],
+      ),
     );
   }
 }
